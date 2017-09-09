@@ -3,19 +3,27 @@ syntax = "proto3";
 
 package starflow.proto;
 
+message packet {
+    int64 ts          = 1;
+    int32 len         = 2;
+    features features = 3;
+}
+
+message key {
+    int32 ip_proto = 1;
+    int32 ip_src   = 2;
+    int32 ip_dst   = 3;
+    int32 th_sport = 4;
+    int32 th_dport = 5;
+}
+
+message features {
+    int32 ip_ttl = 1;
+    int32 q_len  = 2;
+}
+
 message flow {
-
-    message packet {
-
-        message features {
-            int32 ip_ttl = 1;
-            int32 q_len  = 2;
-        }
-
-        int64 ts          = 1;
-        int32 len         = 2;
-    }
-
-    int64 evict_ts          = 1;
-    repeated packet packets = 2;
+    key key                 = 1;
+    int64 evict_ts          = 2;
+    repeated packet packets = 3;
 }

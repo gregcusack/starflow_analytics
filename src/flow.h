@@ -5,7 +5,10 @@
 #include <list>
 #include <chrono>
 
+#include "proto/starflow.pb.h"
+
 namespace starflow {
+
 	class Flow
 	{
 	public:
@@ -23,6 +26,9 @@ namespace starflow {
 
 				unsigned ttl;
 				unsigned q_len;
+
+				proto::features to_proto() const;
+				static features_t from_proto(proto::features&);
 			};
 
 			packet_t()                                    = delete;
