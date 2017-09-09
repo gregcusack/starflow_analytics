@@ -2,5 +2,5 @@ cmake-build-debug
 cmake-build-release
 .DS_Store
 .idea/
-src/proto/*.h
-src/proto/*.cc
+src/proto/*.pb.h
+src/proto/*.pb.cc

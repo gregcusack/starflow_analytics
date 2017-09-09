@@ -6,7 +6,7 @@
 
 starflow::proto::features starflow::Flow::packet_t::features_t::to_proto() const
 {
-	proto::features f;
+	proto::features f {};
 	f.set_ip_ttl(ttl);
 	f.set_q_len(q_len);
 	return f;
@@ -14,9 +14,9 @@ starflow::proto::features starflow::Flow::packet_t::features_t::to_proto() const
 
 starflow::Flow::packet_t::features_t starflow::Flow::packet_t::features_t::from_proto(starflow::proto::features& p)
 {
-	features_t f;
-	f.q_len = p.q_len();
-	f.ttl = p.ip_ttl();
+	features_t f {};
+	f.q_len = (unsigned) p.q_len();
+	f.ttl   = (unsigned) p.ip_ttl();
 	return f;
 }
 
