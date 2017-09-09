@@ -1,0 +1,21 @@
+
+syntax = "proto3";
+
+package starflow.proto;
+
+message flow {
+
+    message packet {
+
+        message features {
+            int32 ip_ttl = 1;
+            int32 q_len  = 2;
+        }
+
+        int64 ts          = 1;
+        int32 len         = 2;
+    }
+
+    int64 evict_ts          = 1;
+    repeated packet packets = 2;
+}
