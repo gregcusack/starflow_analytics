@@ -28,10 +28,10 @@ namespace starflow {
 				unsigned q_len;
 
 				proto::features to_proto() const;
-				static features_t from_proto(proto::features&);
+				static features_t from_proto(const proto::features&);
 			};
 
-			packet_t()                                    = delete;
+			packet_t()                                    = default;
 			packet_t(const packet_t& copy_from)           = default;
 			packet_t& operator=(const packet_t&)          = default;
 			packet_t(packet_t&&)                          = default;
@@ -44,6 +44,9 @@ namespace starflow {
 			features_t                                    features;
 
 			~packet_t()                                   = default;
+
+			proto::packet to_proto() const;
+			static packet_t from_proto(const proto::packet&);
 		};
 
 		Flow()                                            = default;

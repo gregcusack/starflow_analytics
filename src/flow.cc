@@ -12,7 +12,8 @@ starflow::proto::features starflow::Flow::packet_t::features_t::to_proto() const
 	return f;
 }
 
-starflow::Flow::packet_t::features_t starflow::Flow::packet_t::features_t::from_proto(starflow::proto::features& p)
+starflow::Flow::packet_t::features_t
+starflow::Flow::packet_t::features_t::from_proto(const starflow::proto::features& p)
 {
 	features_t f {};
 	f.q_len = (unsigned) p.q_len();
@@ -22,6 +23,25 @@ starflow::Flow::packet_t::features_t starflow::Flow::packet_t::features_t::from_
 
 starflow::Flow::packet_t::packet_t(std::chrono::microseconds ts, unsigned size, features_t features)
 	: ts(ts), len(size), features(features) { }
+
+starflow::proto::packet starflow::Flow::packet_t::to_proto() const
+{
+	proto::packet p {};
+	proto::features p_f = features.to_proto();
+	p.set_len(len);
+	p.set_ts(ts.count());
+	p.set_allocated_features(&p_f);
+	return p;
+}
+
+starflow::Flow::packet_t starflow::Flow::packet_t::from_proto(const starflow::proto::packet& proto)
+{
+	packet_t packet {};
+	packet.ts  = std::chrono::microseconds(proto.ts());
+	packet.len = (unsigned) proto.len();
+	packet.features = features_t::from_proto(proto.features());
+	return packet;
+}
 
 void starflow::Flow::add_packet(std::chrono::microseconds ts, unsigned len,
 								packet_t::features_t features)
