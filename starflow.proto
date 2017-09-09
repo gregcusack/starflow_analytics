@@ -23,7 +23,6 @@ message features {
 }
 
 message flow {
-    key key                 = 1;
-    int64 evict_ts          = 2;
-    repeated packet packets = 3;
+    int64 evict_ts          = 1;
+    repeated packet packets = 2;
 }
