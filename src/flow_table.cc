@@ -35,6 +35,28 @@ bool starflow::FlowTable::key_t::operator<(const starflow::FlowTable::key_t b) c
 		   < std::tie(b.ip_proto, b.ip_src, b.ip_dst, b.th_sport, b.th_dport);
 }
 
+starflow::proto::key starflow::FlowTable::key_t::to_proto() const
+{
+	proto::key p_k {};
+	p_k.set_ip_proto(ip_proto);
+	p_k.set_ip_src(ip_src);
+	p_k.set_ip_dst(ip_dst);
+	p_k.set_th_sport(th_sport);
+	p_k.set_th_dport(th_dport);
+	return p_k;
+}
+
+starflow::FlowTable::key_t starflow::FlowTable::key_t::from_proto(const starflow::proto::key p_k)
+{
+	starflow::FlowTable::key_t k;
+	k.ip_proto = (std::uint8_t) p_k.ip_proto();
+	k.ip_src   = (std::uint32_t) p_k.ip_src();
+	k.ip_dst   = (std::uint32_t) p_k.ip_dst();
+	k.th_sport = (std::uint16_t) p_k.th_sport();
+	k.th_dport = (std::uint16_t) p_k.th_dport();
+	return k;
+}
+
 starflow::FlowTable::FlowTable(
 	std::function<void (key_t, Flow, std::chrono::microseconds, eviction_type)> f,
 	std::chrono::seconds timeout_check_period, std::chrono::seconds tcp_timeout,

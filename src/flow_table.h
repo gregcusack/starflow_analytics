@@ -55,6 +55,9 @@ namespace starflow {
 			std::string str_desc() const;
 
 			bool operator<(key_t b) const;
+
+			proto::key to_proto() const;
+			static key_t from_proto(const proto::key);
 		};
 
 		FlowTable()                            = delete;
