@@ -89,3 +89,27 @@ std::string starflow::Flow::str_desc() const
 	ss << std::setw(3) << _packets.size() << " pkts";
 	return ss.str();
 }
+
+starflow::proto::flow starflow::Flow::to_proto() const
+{
+	starflow::proto::flow p_flow;
+	p_flow.set_evict_ts(_eviction_ts.count());
+
+	for (const packet_t& p : _packets) {
+		starflow::proto::packet* p_packet = p_flow.add_packets();
+		*p_packet = p.to_proto();
+	}
+
+	return p_flow;
+}
+
+starflow::Flow starflow::Flow::from_proto(const starflow::proto::flow& p_flow)
+{
+	Flow flow {};
+	flow._eviction_ts = std::chrono::microseconds(p_flow.evict_ts());
+
+	for (auto& p_packet : p_flow.packets())
+		flow._packets.push_back(packet_t::from_proto(p_packet));
+
+	return flow;
+}

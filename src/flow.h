@@ -43,10 +43,10 @@ namespace starflow {
 			unsigned                                      len;
 			features_t                                    features;
 
-			~packet_t()                                   = default;
-
 			proto::packet to_proto() const;
 			static packet_t from_proto(const proto::packet&);
+
+			~packet_t()                                   = default;
 		};
 
 		Flow()                                            = default;
@@ -68,6 +68,9 @@ namespace starflow {
 		bool complete() const;
 
 		std::string str_desc() const;
+
+		proto::flow to_proto() const;
+		static Flow from_proto(const proto::flow&);
 
 		~Flow()                                           = default;
 
