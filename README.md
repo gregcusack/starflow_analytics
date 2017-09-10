@@ -1,6 +1,12 @@
 
 ## Combined *Flow Analytics Repository
 
+### Build
+
+    mkdir build && cd build
+    cmake ..
+    make
+
 ### Components
 
 #### export::PCAPReplay (src/import/pcap_replay.h)
