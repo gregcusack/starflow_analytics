@@ -68,6 +68,11 @@ std::chrono::microseconds starflow::Flow::recent_ts() const
 	return _recent_ts;
 }
 
+void starflow::Flow::set_eviction_ts(std::chrono::microseconds ts)
+{
+	_eviction_ts = ts;
+}
+
 void starflow::Flow::set_complete()
 {
 	_complete = true;

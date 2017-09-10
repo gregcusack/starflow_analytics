@@ -138,6 +138,7 @@ std::string starflow::FlowTable::eviction_type_to_string(eviction_type e)
 
 void starflow::FlowTable::_evict_flow(key_t key, std::chrono::microseconds ts, eviction_type e)
 {
+	_flows[key].set_eviction_ts(ts);
 	_evict_handler(key, _flows[key], ts, e);
 	_flows.erase(key);
 }
