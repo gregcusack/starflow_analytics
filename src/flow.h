@@ -17,15 +17,15 @@ namespace starflow {
 		{
 			struct features_t
 			{
-				features_t()                              = default;
+				features_t() : ttl(0), q_len(0) { }
 				features_t(const features_t&)             = default;
 				features_t& operator=(const features_t&)  = default;
 				features_t(features_t&&)                  = default;
 				features_t& operator=(features_t&&)       = default;
 				~features_t()                             = default;
 
-				unsigned ttl;
-				unsigned q_len;
+				unsigned ttl = 0;
+				unsigned q_len = 0;
 
 				proto::features to_proto() const;
 				static features_t from_proto(const proto::features&);
@@ -39,9 +39,9 @@ namespace starflow {
 
 			packet_t(std::chrono::microseconds ts, unsigned size, features_t features);
 
-			std::chrono::microseconds                     ts;
-			unsigned                                      len;
-			features_t                                    features;
+			std::chrono::microseconds                     ts = std::chrono::microseconds(0);
+			unsigned                                      len = 0;
+			features_t                                    features = features_t();
 
 			proto::packet to_proto() const;
 			static packet_t from_proto(const proto::packet&);
@@ -78,10 +78,10 @@ namespace starflow {
 
 	private:
 
-		std::list<packet_t>                               _packets;
-		std::chrono::microseconds                         _start_ts;
-		std::chrono::microseconds                         _recent_ts;
-		std::chrono::microseconds                         _eviction_ts;
+		std::list<packet_t>                               _packets = {};
+		std::chrono::microseconds                         _start_ts = std::chrono::microseconds(0);
+		std::chrono::microseconds                         _recent_ts = std::chrono::microseconds(0);
+		std::chrono::microseconds                         _eviction_ts = std::chrono::microseconds(0);
 		bool                                              _complete = false;
 	};
 }

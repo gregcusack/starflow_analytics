@@ -36,11 +36,11 @@ namespace starflow {
 
 		class key_t {
 		public:
-			std::uint8_t  ip_proto;
-			std::uint32_t ip_src;
-			std::uint32_t ip_dst;
-			std::uint16_t th_sport;
-			std::uint16_t th_dport;
+			std::uint8_t  ip_proto = 0;
+			std::uint32_t ip_src   = 0;
+			std::uint32_t ip_dst   = 0;
+			std::uint16_t th_sport = 0;
+			std::uint16_t th_dport = 0;
 
 			key_t() = default;
 			key_t(const key_t&) = default;
@@ -89,7 +89,7 @@ namespace starflow {
 
 		std::map<key_t, Flow>             _flows;
 		std::function<void (key_t, Flow, std::chrono::microseconds, eviction_type)> _evict_handler;
-		std::chrono::microseconds         _last_timeout_check;
+		std::chrono::microseconds         _last_timeout_check   = std::chrono::microseconds(0);
 		std::chrono::seconds              _timeout_check_period = std::chrono::seconds(1);
 		std::chrono::seconds              _udp_timeout          = std::chrono::seconds(30);
 		std::chrono::seconds              _tcp_timeout          = std::chrono::seconds(30);
