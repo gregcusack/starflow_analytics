@@ -26,3 +26,8 @@ message flow {
     int64 evict_ts          = 1;
     repeated packet packets = 2;
 }
+
+message export_flow {
+    key key   = 1;
+    flow flow = 2;
+}

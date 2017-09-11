@@ -11,10 +11,10 @@ namespace starflow {
 	class RedisFlowPublisher : public RedisClient
 	{
 	public:
-		RedisFlowPublisher(std::string redis_host, unsigned redis_port)
+		RedisFlowPublisher(const std::string& redis_host, unsigned redis_port)
 			throw (std::runtime_error);
 
-		void publish(FlowTable::key_t key, Flow flow) throw (std::runtime_error);
+		void publish(const std::string& topic, FlowTable::key_t key, Flow flow) throw (std::runtime_error);
 	};
 }
 

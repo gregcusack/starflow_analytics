@@ -18,7 +18,8 @@ namespace starflow {
 		using cb_t = std::function<void (starflow::FlowTable::key_t, starflow::Flow)>;
 
 	public:
-		RedisFlowSubscriber(std::string redis_host, unsigned redis_port, std::string topic, cb_t cb)
+		RedisFlowSubscriber(const std::string& redis_host, unsigned redis_port,
+							const std::string& topic, cb_t&& cb)
 			throw (std::runtime_error);
 
 		void operator()();
