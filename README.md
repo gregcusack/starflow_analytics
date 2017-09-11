@@ -1,6 +1,13 @@
 
 ## Combined *Flow Analytics Repository
 
+### Dependencies
+
+* libraft [[1]](https://github.com/RaftLib/RaftLib)
+* libpcap [[2]](http://www.tcpdump.org)
+* libcpp_redis [[3]](https://github.com/Cylix/cpp_redis)
+* libprotobuf & protoc [[4]](https://github.com/google/protobuf)
+
 ### Build
 
     mkdir build && cd build
@@ -38,3 +45,15 @@ Implements a configurable flow table based on the L3/L4 5-tuple. Usage example:
 #### RedisFlowPublisher (src/redis_flow_publisher.h)
 
 Implements a Redis client that publishes flow records to a topic.
+
+#### Docker Redis Image
+        
+    docker build .
+    docker run -itp 6379:6379 redis
+
+#### References
+
+[1] https://github.com/RaftLib/RaftLib
+[2] http://www.tcpdump.org
+[3] https://github.com/Cylix/cpp_redis
+[4] https://github.com/google/protobuf
