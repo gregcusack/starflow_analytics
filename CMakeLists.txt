@@ -6,6 +6,7 @@ set(CMAKE_CXX_STANDARD 11)
 include(cmake/protobuf.cmake)
 include(cmake/pcap.cmake)
 include(cmake/cpp_redis.cmake)
+include(cmake/raft.cmake)
 
 add_custom_command(
         OUTPUT
@@ -16,5 +17,26 @@ add_custom_command(
         WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
 )
 
-add_executable(test_exe test.cc src/proto/starflow.pb.cc)
-target_link_libraries(test_exe protobuf)
+
+add_executable(test_publisher src/test_publisher_main.cc
+        src/flow.h src/flow.cc
+        src/flow_table.h src/flow_table.cc
+        src/proto/starflow.pb.h src/proto/starflow.pb.cc
+        src/redis_client.h src/redis_client.cc
+        src/redis_flow_publisher.h src/redis_flow_publisher.cc)
+
+target_link_libraries(test_publisher protobuf)
+target_link_libraries(test_publisher cpp_redis)
+target_link_libraries(test_publisher tacopie)
+
+
+add_executable(test_subscriber src/test_subscriber_main.cc
+        src/flow.h src/flow.cc
+        src/flow_table.h src/flow_table.cc
+        src/proto/starflow.pb.h src/proto/starflow.pb.cc
+        src/redis_subscriber.h src/redis_subscriber.cc
+        src/redis_flow_subscriber.h src/redis_flow_subscriber.cc)
+
+target_link_libraries(test_subscriber protobuf)
+target_link_libraries(test_subscriber cpp_redis)
+target_link_libraries(test_subscriber tacopie)

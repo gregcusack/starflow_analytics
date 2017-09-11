@@ -1,8 +1,10 @@
 
 #include "redis_subscriber.h"
 
-starflow::RedisSubscriber::RedisSubscriber(std::string redis_host, unsigned redis_port)
+starflow::RedisSubscriber::RedisSubscriber(std::string redis_host, unsigned redis_port,
+										   std::string topic)
 	throw (std::runtime_error)
+	: _topic(topic)
 {
 	try {
 		_redis.connect(redis_host, redis_port);

@@ -1,15 +1,13 @@
 
 #include "redis_flow_publisher.h"
 
-starflow::RedisFlowPublisher::RedisFlowPublisher(std::string redis_host, int redis_port,
-												 std::string topic)
+starflow::RedisFlowPublisher::RedisFlowPublisher(std::string redis_host, unsigned redis_port)
 	throw (std::runtime_error)
-{
-	//TODO: implement
-}
+	: RedisClient(redis_host, redis_port) { }
 
-void starflow::RedisFlowPublisher::publish(FlowTable::key_t key, Flow flow) const
+void starflow::RedisFlowPublisher::publish(FlowTable::key_t key, Flow flow)
 	throw (std::runtime_error)
 {
-	//TODO: implement
+	_redis.publish("test", "hello");
+	_redis.sync_commit();
 }

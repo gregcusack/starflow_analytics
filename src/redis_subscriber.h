@@ -11,7 +11,7 @@ namespace starflow {
 	class RedisSubscriber
 	{
 	public:
-		RedisSubscriber(std::string redis_host, unsigned redis_port)
+		RedisSubscriber(std::string redis_host, unsigned redis_port, std::string topic)
 			throw (std::runtime_error);
 
 		RedisSubscriber(const RedisSubscriber&)             = delete;
@@ -19,11 +19,15 @@ namespace starflow {
 		RedisSubscriber(RedisSubscriber&&)                  = delete;
 		RedisSubscriber& operator=(RedisSubscriber&&)       = delete;
 
+		virtual void operator()() = 0;
+
 		void disconnect();
 		virtual ~RedisSubscriber();
 
 	protected:
 		cpp_redis::redis_subscriber _redis;
+		std::string _topic;
+		bool _exit = false;
 	};
 }
 

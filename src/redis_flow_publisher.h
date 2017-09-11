@@ -2,28 +2,19 @@
 #ifndef STARFLOW_REDIS_FLOW_PUBLISHER_H
 #define STARFLOW_REDIS_FLOW_PUBLISHER_H
 
-#include <stdexcept>
-#include <string>
-
 #include "flow.h"
 #include "flow_table.h"
+#include "redis_client.h"
 
 namespace starflow {
 
-	class RedisFlowPublisher
+	class RedisFlowPublisher : public RedisClient
 	{
-		RedisFlowPublisher(std::string redis_host, int redis_port, std::string topic)
+	public:
+		RedisFlowPublisher(std::string redis_host, unsigned redis_port)
 			throw (std::runtime_error);
 
-		RedisFlowPublisher(const RedisFlowPublisher&)            = delete;
-		RedisFlowPublisher& operator=(const RedisFlowPublisher&) = delete;
-		RedisFlowPublisher(RedisFlowPublisher&&)                 = default;
-		RedisFlowPublisher& operator=(const RedisFlowPublisher&) = default;
-
-		void publish(FlowTable::key_t key, Flow flow) const
-			throw (std::runtime_error);
-
-		~RedisFlowPublisher() = default;
+		void publish(FlowTable::key_t key, Flow flow) throw (std::runtime_error);
 	};
 }
 
