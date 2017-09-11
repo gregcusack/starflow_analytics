@@ -15,10 +15,8 @@ int main(int argc, char** argv)
 
 	RedisFlowPublisher publisher(redis_host, redis_port);
 
-	FlowTable flow_table([&publisher](FlowTable::key_t key, Flow flow, std::chrono::microseconds ts,
-									  starflow::FlowTable::eviction_type e) {
-
-		//TODO: fix serialization issue
+	FlowTable flow_table([&redis_topic, &publisher](FlowTable::key_t key, Flow flow,
+		std::chrono::microseconds ts, starflow::FlowTable::eviction_type e) {
 		publisher.publish(redis_topic, key, flow);
 	});
 

@@ -27,10 +27,10 @@ starflow::Flow::packet_t::packet_t(std::chrono::microseconds ts, unsigned size, 
 starflow::proto::packet starflow::Flow::packet_t::to_proto() const
 {
 	proto::packet p {};
-	proto::features p_f = features.to_proto();
+	proto::features* p_f = new proto::features(features.to_proto());
 	p.set_len(len);
 	p.set_ts(ts.count());
-	p.set_allocated_features(&p_f);
+	p.set_allocated_features(p_f);
 	return p;
 }
 
