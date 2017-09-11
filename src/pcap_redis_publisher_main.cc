@@ -7,11 +7,16 @@ int main(int argc, char** argv)
 {
 	using namespace starflow;
 
-	//TODO: read from argv
-	std::string pcap_file_name = "/Users/olli/Downloads/caida2015_02_dirA.pcap";
-	std::string redis_topic    = "starflow";
-	std::string redis_host     = "127.0.0.1";
-	unsigned short redis_port  = 6379;
+	if (argc < 2 || argc > 5) {
+		std::cerr << "usage: pcap_redis_publisher <read_from.pcap> [<topic>] [<redis_host>]"
+				  << " [<redis_port>]" << std::endl;
+		return 1;
+	}
+
+	std::string pcap_file_name = std::string(argv[1]);
+	std::string redis_topic    = (argc >= 3) ? std::string(argv[2]) : "starflow";
+	std::string redis_host     = (argc >= 4) ? std::string(argv[3]) : "127.0.0.1";
+	unsigned short redis_port  = (argc == 5) ? (unsigned short) atoi(argv[4]) : 6379;
 
 	RedisFlowPublisher publisher(redis_host, redis_port);
 
