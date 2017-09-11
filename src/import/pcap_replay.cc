@@ -3,7 +3,9 @@
 
 #include <thread>
 
-starflow::import::PCAPReplay::PCAPReplay(const std::string& file_name) throw(std::runtime_error)
+starflow::import::PCAPReplay::PCAPReplay(const std::string& file_name, bool sleep)
+	throw(std::runtime_error)
+	: _sleep(sleep)
 {
 	char errbuf[PCAP_ERRBUF_SIZE];
 
@@ -20,7 +22,7 @@ void starflow::import::PCAPReplay::operator()(
 	while (pcap_next_ex(_pcap, &header, &packet) >= 0) {
 		auto ts_us = us_from_timeval(header->ts);
 
-		if (_i > 0) {
+		if (_i > 0 && _sleep) {
 			auto d = std::chrono::duration_cast<std::chrono::microseconds>(ts_us - _last_ts);
 			std::this_thread::sleep_for(d);
 		}

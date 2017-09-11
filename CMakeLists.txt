@@ -42,6 +42,7 @@ target_link_libraries(test_subscriber protobuf)
 target_link_libraries(test_subscriber cpp_redis)
 target_link_libraries(test_subscriber tacopie)
 
+
 add_executable(raft_example src/raft_example_main.cc
         src/kernels/counter.h
         src/kernels/printer.h
@@ -58,3 +59,18 @@ target_link_libraries(raft_example protobuf)
 target_link_libraries(raft_example cpp_redis)
 target_link_libraries(raft_example tacopie)
 target_link_libraries(raft_example raft)
+
+
+add_executable(pcap_redis_publisher
+        src/pcap_redis_publisher_main.cc
+        src/redis_flow_publisher.cc
+        src/redis_client.cc
+        src/flow_table.cc
+        src/flow.cc
+        src/proto/starflow.pb.cc
+        src/import/pcap_replay.cc)
+
+target_link_libraries(pcap_redis_publisher protobuf)
+target_link_libraries(pcap_redis_publisher cpp_redis)
+target_link_libraries(pcap_redis_publisher pcap)
+target_link_libraries(pcap_redis_publisher tacopie)

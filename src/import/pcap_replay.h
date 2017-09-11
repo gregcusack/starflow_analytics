@@ -19,7 +19,8 @@ namespace starflow {
 			PCAPReplay(PCAPReplay&&)                 = default;
 			PCAPReplay& operator=(PCAPReplay&&)      = default;
 
-			explicit PCAPReplay(const std::string& file_name) throw(std::runtime_error);
+			explicit PCAPReplay(const std::string& file_name, bool sleep = true)
+				throw(std::runtime_error);
 
 			void operator()(std::function<void (struct pcap_pkthdr*, const unsigned char*)> f);
 
@@ -31,6 +32,7 @@ namespace starflow {
 			unsigned long _i                   = 0;
 			pcap_t* _pcap                      = nullptr;
 			std::chrono::microseconds _last_ts = std::chrono::microseconds();
+			bool _sleep;
 		};
 	}
 }
