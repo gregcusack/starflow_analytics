@@ -58,6 +58,8 @@ namespace starflow {
 		void add_packet(std::chrono::microseconds ts, unsigned len,
 						packet_t::features_t features = packet_t::features_t());
 
+		const std::list<packet_t> packets() const;
+
 		unsigned long n_packets() const;
 		std::chrono::microseconds start_ts() const;
 		std::chrono::microseconds recent_ts() const;

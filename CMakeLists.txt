@@ -43,6 +43,11 @@ target_link_libraries(test_subscriber cpp_redis)
 target_link_libraries(test_subscriber tacopie)
 
 add_executable(raft_example src/raft_example_main.cc
+        src/kernels/counter.h
+        src/kernels/printer.h
+        src/kernels/redis_flow_subscriber.h
+        src/kernels/ip_source_timestamps.h
+        src/kernels/sink.h
         src/flow.h src/flow.cc
         src/flow_table.h src/flow_table.cc
         src/proto/starflow.pb.h src/proto/starflow.pb.cc

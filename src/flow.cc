@@ -53,6 +53,11 @@ void starflow::Flow::add_packet(std::chrono::microseconds ts, unsigned len,
 	_recent_ts = ts;
 }
 
+const std::list<starflow::Flow::packet_t> starflow::Flow::packets() const
+{
+	return _packets;
+}
+
 unsigned long starflow::Flow::n_packets() const
 {
 	return _packets.size();
