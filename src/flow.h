@@ -65,6 +65,7 @@ namespace starflow {
 		std::chrono::microseconds recent_ts() const;
 
 		void set_eviction_ts(std::chrono::microseconds ts);
+		std::chrono::microseconds eviction_ts() const;
 
 		void set_complete();
 		bool complete() const;
