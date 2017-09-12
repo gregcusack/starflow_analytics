@@ -8,12 +8,16 @@
 * libcpp_redis [[3]](https://github.com/Cylix/cpp_redis)
 * libprotobuf & protoc [[4]](https://github.com/google/protobuf)
 
+---
 ### Build
+
+Requires C++14 compatible compiler.
 
     mkdir build && cd build
     cmake ..
     make
 
+---
 ### Components
 
 #### export::PCAPReplay (src/import/pcap_replay.h)
@@ -46,14 +50,27 @@ Implements a configurable flow table based on the L3/L4 5-tuple. Usage example:
 
 Implements a Redis client that publishes flow records to a topic.
 
-#### Docker Redis Image
+#### RedisFlowSubscriber (src/redis_flow_subscriber.h)
+
+Implements a Redis client that connects to a redis server and reads flow records from a pub/sub channel.
+
+#### FlowFileReplay (src/import/flow_file_replay.h)
+
+Reads a protobuf file and replays the flows based on eviction timestamps.
+
+---
+### Docker Redis Image
         
     docker build .
     docker run -itp 6379:6379 redis
 
-#### References
+---
+### References
 
 [1] https://github.com/RaftLib/RaftLib
+
 [2] http://www.tcpdump.org
+
 [3] https://github.com/Cylix/cpp_redis
+
 [4] https://github.com/google/protobuf
