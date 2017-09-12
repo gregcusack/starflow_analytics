@@ -31,3 +31,7 @@ message export_flow {
     key key   = 1;
     flow flow = 2;
 }
+
+message flow_list {
+    repeated export_flow flows = 1;
+}

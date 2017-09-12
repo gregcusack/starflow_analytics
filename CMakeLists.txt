@@ -19,6 +19,7 @@ add_custom_command(
 )
 
 
+# test_publisher
 add_executable(test_publisher src/test_publisher_main.cc
         src/flow.h src/flow.cc
         src/flow_table.h src/flow_table.cc
@@ -31,6 +32,7 @@ target_link_libraries(test_publisher cpp_redis)
 target_link_libraries(test_publisher tacopie)
 
 
+# test_subscriber
 add_executable(test_subscriber src/test_subscriber_main.cc
         src/flow.h src/flow.cc
         src/flow_table.h src/flow_table.cc
@@ -43,6 +45,7 @@ target_link_libraries(test_subscriber cpp_redis)
 target_link_libraries(test_subscriber tacopie)
 
 
+# raft_example
 add_executable(raft_example src/raft_example_main.cc
         src/kernels/counter.h
         src/kernels/printer.h
@@ -61,6 +64,7 @@ target_link_libraries(raft_example tacopie)
 target_link_libraries(raft_example raft)
 
 
+# pcap_redis_publisher
 add_executable(pcap_redis_publisher
         src/pcap_redis_publisher_main.cc
         src/redis_flow_publisher.cc
@@ -68,9 +72,36 @@ add_executable(pcap_redis_publisher
         src/flow_table.cc
         src/flow.cc
         src/proto/starflow.pb.cc
-        src/import/pcap_replay.cc)
+        src/import/pcap_replay.cc src/flow_file_redis_publisher_main.cc)
 
 target_link_libraries(pcap_redis_publisher protobuf)
 target_link_libraries(pcap_redis_publisher cpp_redis)
 target_link_libraries(pcap_redis_publisher pcap)
 target_link_libraries(pcap_redis_publisher tacopie)
+
+
+# pcap_flow_exporter
+add_executable(pcap_flow_file_exporter
+        src/pcap_flow_file_exporter_main.cc
+        src/flow_table.cc
+        src/flow.cc
+        src/proto/starflow.pb.cc
+        src/import/pcap_replay.cc)
+
+target_link_libraries(pcap_flow_file_exporter protobuf)
+target_link_libraries(pcap_flow_file_exporter pcap)
+
+
+# flow_file_redis_publisher
+add_executable(flow_file_redis_publisher
+        src/flow_file_redis_publisher_main.cc
+        src/redis_flow_publisher.cc
+        src/redis_client.cc
+        src/proto/starflow.pb.cc
+        src/flow.cc
+        src/flow_table.cc
+        src/import/flow_file_replay.cc)
+
+target_link_libraries(flow_file_redis_publisher protobuf)
+target_link_libraries(flow_file_redis_publisher cpp_redis)
+target_link_libraries(flow_file_redis_publisher tacopie)
