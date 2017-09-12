@@ -74,10 +74,3 @@ target_link_libraries(pcap_redis_publisher protobuf)
 target_link_libraries(pcap_redis_publisher cpp_redis)
 target_link_libraries(pcap_redis_publisher pcap)
 target_link_libraries(pcap_redis_publisher tacopie)
-
-add_executable(test_protobuf
-        test_protobuf.cc
-        src/flow_table.cc
-        src/flow.cc
-        src/proto/starflow.pb.cc)
-target_link_libraries(test_protobuf protobuf)
