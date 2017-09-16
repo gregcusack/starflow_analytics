@@ -21,8 +21,12 @@ int main(int argc, char** argv)
 	proto::flow_list flow_list;
 	std::ofstream of(protobuf_file_name);
 
-	FlowTable flow_table([&flow_list](FlowTable::key_t key, Flow flow, std::chrono::microseconds ts,
-							starflow::FlowTable::eviction_type e) {
+	auto start1 = std::chrono::steady_clock::now();
+	auto start2 = std::chrono::steady_clock::now();
+
+	FlowTable flow_table([&flow_table, &flow_list, &start2](FlowTable::key_t key, Flow flow,
+											   std::chrono::microseconds ts,
+											   starflow::FlowTable::eviction_type e) {
 
 		proto::export_flow* flow_proto = flow_list.add_flows();
 		flow_proto->set_allocated_flow(new proto::flow(flow.to_proto()));
@@ -31,9 +35,16 @@ int main(int argc, char** argv)
 		int flows_exported = flow_list.flows_size();
 
 		if (flows_exported % 100 == 0) {
-			std::cout << std::setw(7) << flows_exported << " flows " << std::setw(5)
-					  << std::fixed << std::setprecision(2)
-					  << (double) flow_list.ByteSize() / 1048576 << "MB" << std::endl;
+
+			unsigned long flows_in_table = flow_table.count_flows();
+			auto now = std::chrono::steady_clock::now();
+			auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(now - start2);
+
+			std::cout << std::setw(7) << flows_exported << " flows, " << std::setw(5) << std::fixed
+					  << std::setprecision(2) << (double) flow_list.ByteSize() / 1048576 << " MB, "
+					  << duration.count() << " ms, " << flows_in_table << " flows" << std::endl;
+
+			start2 = now;
 		}
 	});
 

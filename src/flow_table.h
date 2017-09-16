@@ -81,6 +81,8 @@ namespace starflow {
 
 		static std::string eviction_type_to_string(eviction_type e);
 
+		unsigned long count_flows() const;
+
 	private:
 
 		void _evict_flow(key_t key, std::chrono::microseconds ts, eviction_type e);
