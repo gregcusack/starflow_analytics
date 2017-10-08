@@ -4,6 +4,8 @@ project(starflow_analytics)
 set(CMAKE_CXX_STANDARD 14) # raft requires C++14
 set(CMAKE_CXX_FLAGS -DL1D_CACHE_LINE_SIZE=64) # 64 bytes for x86_64 -- adapt for used arch
 
+include(cmake/common.cmake)
+
 include(cmake/protobuf.cmake)
 include(cmake/pcap.cmake)
 include(cmake/cpp_redis.cmake)
@@ -105,3 +107,18 @@ add_executable(flow_file_redis_publisher
 target_link_libraries(flow_file_redis_publisher protobuf)
 target_link_libraries(flow_file_redis_publisher cpp_redis)
 target_link_libraries(flow_file_redis_publisher tacopie)
+
+
+# clfr_converter
+add_executable(clfr_converter
+        src/clfr_converter_main.cc)
+
+target_link_libraries(clfr_converter raft)
+
+# clfr_driver
+add_executable(clfr_driver
+        src/clfr_driver_main.cc)
+
+target_include_directories(clfr_driver PUBLIC ${RAFT_INC})
+target_link_libraries(clfr_driver raft)
+
