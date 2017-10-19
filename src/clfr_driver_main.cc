@@ -2,39 +2,24 @@
 #include <raft>
 #include <raftio>
 
-#include "kernels/microflow_reader.h"
-#include "kernels/clfr_reader.h"
-#include "kernels/clfr_counter.h"
-
-// Apps.
-// Profiler.
-#include "kernels/host_timing_profiler.h"
-
-// Feature calculators.
-#include "kernels/rich_feature_calculator.h"
-#include "kernels/netflow_feature_calculator.h"
-#include "kernels/pfe_feature_calculator.h"
-#include "kernels/allstats_feature_calculator.h"
-
-// Micro-burst detector.
-#include "kernels/microburst_detector.h"
-
-
-// Utilities.
-#include "kernels/cloner.h"
-
-#include "kernels/clfr_counter_chain.h"
-
-#include "kernels/clfr_counter_replicated.h"
-
-#include "kernels/benchmark_printer.h"
-
-
 #include <cstdint>
 #include <iostream>
 #include <fstream>
 #include <string>
 
+#include "kernels/allstats_feature_calculator.h"
+#include "kernels/benchmark_printer.h"
+#include "kernels/clfr_counter.h"
+#include "kernels/clfr_counter_chain.h"
+#include "kernels/clfr_counter_replicated.h"
+#include "kernels/clfr_reader.h"
+#include "kernels/cloner.h"
+#include "kernels/host_timing_profiler.h"
+#include "kernels/microburst_detector.h"
+#include "kernels/microflow_reader.h"
+#include "kernels/netflow_feature_calculator.h"
+#include "kernels/pfe_feature_calculator.h"
+#include "kernels/rich_feature_calculator.h"
 
 
 void runSimpleCounter();

@@ -2,26 +2,17 @@
 #include <raft>
 #include <raftio>
 
-#include "kernels/microflow_reader.h"
-// #include "kernels/clfr_reader.h"
-#include "kernels/clfr_counter.h"
-
-#include "kernels/microburst_detector.h"
-
-#include "kernels/cloner.h"
-
-#include "kernels/clfr_counter_replicated.h"
-
-#include "kernels/benchmark_printer.h"
-
-#include "kernels/tap.h"
-#include "kernels/benchmark_printer.h"
-
-
 #include <cstdint>
 #include <iostream>
 #include <fstream>
 
+#include "kernels/benchmark_printer.h"
+#include "kernels/clfr_counter.h"
+#include "kernels/clfr_counter_replicated.h"
+#include "kernels/cloner.h"
+#include "kernels/microburst_detector.h"
+#include "kernels/microflow_reader.h"
+#include "kernels/tap.h"
 
 
 void runReplicas(int N){
