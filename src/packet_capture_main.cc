@@ -2,16 +2,17 @@
 #include <raft>
 
 #include "proto/starflow.pb.h"
-#include "kernels/packet_capture.h"
+#include "kernels/live_capture.h"
 #include "kernels/printer.h"
+#include "raw_packet.h"
 
 int main(int argc, char** argv)
 {
-	starflow::kernels::PacketCapture packet_capture("en10");
-	starflow::kernels::Printer<starflow::proto::raw_packet> printer;
+	starflow::kernels::LiveCapture live_capture("en10");
+	starflow::kernels::Printer<starflow::RawPacket> printer;
 	raft::map m;
 
-	m += packet_capture >> printer;
+	m += live_capture >> printer;
 
 	m.exe();
 

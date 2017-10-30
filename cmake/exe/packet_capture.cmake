@@ -1,7 +1,8 @@
 
 add_executable(packet_capture
+        src/raw_packet.h src/raw_packet.cc
         src/proto/starflow.pb.h src/proto/starflow.pb.cc
-        src/kernels/packet_capture.h src/kernels/packet_capture.cc
+        src/kernels/live_capture.h src/kernels/live_capture.cc
         src/kernels/printer.h
         src/packet_capture_main.cc)
 

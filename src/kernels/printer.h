@@ -6,6 +6,9 @@
 
 #include "../proto/starflow.pb.h"
 
+#include "../raw_packet.h"
+
+
 namespace starflow {
 
 	std::ostream& operator<<(std::ostream& os, proto::packet& p)
@@ -19,6 +22,13 @@ namespace starflow {
 		os << "starflow::proto::raw_packet(len=" << p.len() << ", ts=" << p.ts() << ")";
 		return os;
 	}
+
+	std::ostream& operator<<(std::ostream& os, RawPacket& p)
+	{
+		os << "starflow::RawPacket(len=" << p.len << ", ts=" << p.ts << ")";
+		return os;
+	}
+
 
 	namespace kernels {
 

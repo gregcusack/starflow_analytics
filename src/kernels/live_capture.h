@@ -7,10 +7,10 @@
 
 namespace starflow {
 	namespace kernels {
-		class PacketCapture : public raft::kernel
+		class LiveCapture : public raft::kernel
 		{
 		public:
-			explicit PacketCapture(const std::string& dev);
+			explicit LiveCapture(const std::string& dev);
 			raft::kstatus run() override;
 
 		private:
