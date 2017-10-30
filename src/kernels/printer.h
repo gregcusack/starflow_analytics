@@ -6,7 +6,7 @@
 
 #include "../proto/starflow.pb.h"
 
-#include "../raw_packet.h"
+#include "../types/raw_packet.h"
 
 
 namespace starflow {
@@ -23,7 +23,7 @@ namespace starflow {
 		return os;
 	}
 
-	std::ostream& operator<<(std::ostream& os, RawPacket& p)
+	std::ostream& operator<<(std::ostream& os, types::RawPacket& p)
 	{
 		os << "starflow::RawPacket(len=" << p.len << ", ts=" << p.ts << ")";
 		return os;

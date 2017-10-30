@@ -1,12 +1,12 @@
 
 #include "live_capture.h"
-#include "../raw_packet.h"
+#include "../types/raw_packet.h"
 
 starflow::kernels::LiveCapture::LiveCapture(const std::string& dev)
 	: raft::kernel(), _pcap(nullptr)
 {
 	_connect(dev);
-	output.add_port<RawPacket>("out");
+	output.add_port<types::RawPacket>("out");
 }
 
 raft::kstatus starflow::kernels::LiveCapture::run()
@@ -15,7 +15,7 @@ raft::kstatus starflow::kernels::LiveCapture::run()
 	const u_char* pl;
 
 	pcap_next_ex(_pcap, &hdr, &pl);
-	output["out"].push(RawPacket(hdr, pl));
+	output["out"].push(types::RawPacket(hdr, pl));
 	return(raft::proceed);
 }
 

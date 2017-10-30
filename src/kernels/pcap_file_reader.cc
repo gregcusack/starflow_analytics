@@ -1,12 +1,12 @@
 
 #include "pcap_file_reader.h"
 
-#include "../raw_packet.h"
+#include "../types/raw_packet.h"
 
 starflow::kernels::PCAPFileReader::PCAPFileReader(const std::string& file_name)
 {
 	_open(file_name);
-	output.add_port<RawPacket>("out");
+	output.add_port<types::RawPacket>("out");
 }
 
 raft::kstatus starflow::kernels::PCAPFileReader::run()
@@ -15,7 +15,7 @@ raft::kstatus starflow::kernels::PCAPFileReader::run()
 	const u_char* pl;
 
 	pcap_next_ex(_pcap, &hdr, &pl);
-	output["out"].push(RawPacket(hdr, pl));
+	output["out"].push(types::RawPacket(hdr, pl));
 	return(raft::proceed);
 }
 
