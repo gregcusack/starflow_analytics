@@ -1,11 +1,27 @@
 
-#ifndef STARFLOW_KERNELS_PRINTER
-#define STARFLOW_KERNELS_PRINTER
+#ifndef STARFLOW_KERNELS_PRINTER_H
+#define STARFLOW_KERNELS_PRINTER_H
 
 #include <iostream>
 
+#include "../proto/starflow.pb.h"
+
 namespace starflow {
+
+	std::ostream& operator<<(std::ostream& os, proto::packet& p)
+	{
+		os << "starflow::proto::packet(len=" << p.len() << ", ts=" << p.ts() << ")";
+		return os;
+	}
+
+	std::ostream& operator<<(std::ostream& os, proto::raw_packet& p)
+	{
+		os << "starflow::proto::raw_packet(len=" << p.len() << ", ts=" << p.ts() << ")";
+		return os;
+	}
+
 	namespace kernels {
+
 		template<typename T>
 		class Printer : public raft::kernel
 		{
