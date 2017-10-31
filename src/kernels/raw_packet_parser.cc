@@ -48,7 +48,8 @@ raft::kstatus starflow::kernels::RawPacketParser::run()
 
 	ip = (struct ip*) (raw_packet.pl + pkt_offset);
 
-//	features.ttl = (unsigned) ip->ip_ttl;
+	packet.features.ip_ttl = (unsigned short) ip->ip_ttl;
+
 	pkt_offset += sizeof(struct ip);
 
 	if (ip->ip_p == IPPROTO_UDP) {
@@ -57,6 +58,7 @@ raft::kstatus starflow::kernels::RawPacketParser::run()
 	} else if (ip->ip_p == IPPROTO_TCP) {
 		tcp = (struct tcphdr*) (raw_packet.pl + pkt_offset);
 		key = {ip->ip_p, ip->ip_src, ip->ip_dst, tcp->th_sport, tcp->th_dport};
+		packet.features.tcp_flags = types::Features::tcp_flags_t(tcp->th_flags);
 	} else return raft::proceed;
 
 	output["out"].push(std::make_pair(key, packet));

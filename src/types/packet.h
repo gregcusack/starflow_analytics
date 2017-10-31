@@ -5,6 +5,8 @@
 #include <chrono>
 #include <string>
 
+#include "features.h"
+
 namespace starflow {
 	namespace types {
 		class Packet
@@ -23,6 +25,8 @@ namespace starflow {
 
 			std::chrono::microseconds ts;
 			unsigned                  len;
+
+			Features features;
 
 			std::string str_desc() const;
 

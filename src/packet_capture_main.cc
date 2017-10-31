@@ -19,6 +19,10 @@ int main(int argc, char** argv)
 		std::pair<starflow::types::Key, starflow::types::Packet> p {};
 		in["0"].pop(p);
 		std::cout << p.first.str_desc() << " " << p.second.str_desc() << std::endl;
+
+		std::cout << std::dec << (unsigned) p.second.features.ip_ttl << std::endl;
+		std::cout << p.second.features.tcp_flags.str_desc() << std::endl;
+
 		return raft::proceed;
 	});
 
