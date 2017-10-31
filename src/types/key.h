@@ -23,10 +23,10 @@ namespace starflow {
 			Key& operator=(Key&&)      = default;
 
 			Key(u_char ip_p, in_addr ip_src, in_addr ip_dst, unsigned short th_sport,
-			unsigned short th_dport);
+				unsigned short th_dport);
 
-			Key(std::uint8_t ip_p, std::uint32_t ip_src, std::uint32_t ip_dst, std::uint16_t th_sport,
-			std::uint16_t th_dport);
+			Key(std::uint8_t ip_p, std::uint32_t ip_src, std::uint32_t ip_dst,
+				std::uint16_t th_sport, std::uint16_t th_dport);
 
 			std::string str_desc() const;
 
