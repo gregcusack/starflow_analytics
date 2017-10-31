@@ -33,7 +33,11 @@ std::string starflow::types::Key::str_desc() const
 	return desc;
 };
 
-starflow::types::Key::~Key() { }
+bool starflow::types::Key::operator<(starflow::types::Key b) const
+{
+	return std::tie(ip_proto, ip_src, ip_dst, th_sport, th_dport)
+		<  std::tie(b.ip_proto, b.ip_src, b.ip_dst, b.th_sport, b.th_dport);
+}
 
 std::string starflow::types::Key::_uint32_ip_addr_to_str(uint32_t addr) const
 {
