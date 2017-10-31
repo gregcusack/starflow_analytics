@@ -52,7 +52,7 @@ int main(int argc, char** argv)
 		[&flow_table](struct pcap_pkthdr* hdr, const unsigned char* buf) {
 
 		flow_table.add_packet(import::PCAPReplay::us_from_timeval(hdr->ts),(unsigned) hdr->caplen,
-							  buf, FlowTable::outer_header_type::ip);
+							  buf, FlowTable::outer_header_type::eth);
 	});
 
 	flow_list.SerializeToOstream(&of);

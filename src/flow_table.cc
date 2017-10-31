@@ -86,7 +86,7 @@ void starflow::FlowTable::add_packet(std::chrono::microseconds ts, unsigned len,
 		eth = (ether_header*) buf;
 		pkt_offset += sizeof(struct ether_header);
 
-		if (eth->ether_type != ETHERTYPE_IP)
+		if (ntohs(eth->ether_type) != ETHERTYPE_IP)
 			return;
 	}
 
