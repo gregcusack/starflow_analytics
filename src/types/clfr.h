@@ -20,6 +20,11 @@ namespace starflow {
 
 			void add_packet(Packet p);
 
+			std::string str_desc() const;
+
+			unsigned long n_packets() const;
+			unsigned long n_bytes() const;
+
 			virtual ~CLFR() = default;
 
 		private:
