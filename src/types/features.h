@@ -19,12 +19,12 @@ namespace starflow {
 				tcp_flags_t& operator=(const tcp_flags_t&) = default;
 				tcp_flags_t(tcp_flags_t&&)                 = default;
 				tcp_flags_t& operator=(tcp_flags_t&&)      = default;
-				inline bool is_urg() const;
-				inline bool is_ack() const;
-				inline bool is_psh() const;
-				inline bool is_rst() const;
-				inline bool is_syn() const;
-				inline bool is_fin() const;
+				inline bool is_urg() const { return (_flags & _urg) == _urg; }
+				inline bool is_ack() const { return (_flags & _ack) == _ack; }
+				inline bool is_psh() const { return (_flags & _psh) == _psh; }
+				inline bool is_rst() const { return (_flags & _rst) == _rst; }
+				inline bool is_syn() const { return (_flags & _syn) == _syn; }
+				inline bool is_fin() const { return (_flags & _fin) == _fin; }
 				std::string str_desc() const;
 
 			private:
