@@ -17,6 +17,9 @@ namespace starflow {
 
 		private:
 			std::map<types::Key, types::CLFR> _flows;
+
+			void _check_timeouts();
+			void _evict_flow(const types::Key& k);
 		};
 	}
 }
