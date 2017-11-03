@@ -35,9 +35,6 @@ raft::kstatus starflow::kernels::RawPacketParser::run()
 
 	types::Packet packet(raw_packet.ts, raw_packet.len);
 
-	//TODO: sometimes pl is null after pop from FIFO -- needs debugging, assert for now
-	assert(raw_packet.pl != nullptr);
-
 	if (_outer_header == outer_header_type::eth) {
 		eth = (ether_header*) raw_packet.pl;
 		pkt_offset += sizeof(struct ether_header);
@@ -48,7 +45,7 @@ raft::kstatus starflow::kernels::RawPacketParser::run()
 
 	ip = (struct ip*) (raw_packet.pl + pkt_offset);
 
-	packet.features.ip_ttl = (unsigned short) ip->ip_ttl;
+	packet.features.ip_ttl = ip->ip_ttl;
 
 	pkt_offset += sizeof(struct ip);
 
