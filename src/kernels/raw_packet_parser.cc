@@ -21,6 +21,21 @@ starflow::kernels::RawPacketParser::RawPacketParser(outer_header_type t)
 
 raft::kstatus starflow::kernels::RawPacketParser::run()
 {
+	types::Key key;
+	types::RawPacket raw_packet {};
+
+	input["in"].pop(raw_packet);
+	types::Packet packet(raw_packet.ts, raw_packet.len);
+
+	if (_parse_packet(key, raw_packet, packet))
+		output["out"].push(std::make_pair(key, packet));
+
+	return raft::proceed;
+}
+
+bool starflow::kernels::RawPacketParser
+	::_parse_packet(types::Key& key, types::RawPacket& raw_packet, types::Packet& packet)
+{
 	std::size_t pkt_offset = 0;
 
 	struct ether_header* eth = nullptr;
@@ -28,19 +43,12 @@ raft::kstatus starflow::kernels::RawPacketParser::run()
 	struct tcphdr*       tcp = nullptr;
 	struct udphdr*       udp = nullptr;
 
-	types::Key key;
-	types::RawPacket raw_packet {};
-
-	input["in"].pop(raw_packet);
-
-	types::Packet packet(raw_packet.ts, raw_packet.len);
-
 	if (_outer_header == outer_header_type::eth) {
 		eth = (ether_header*) raw_packet.pl;
 		pkt_offset += sizeof(struct ether_header);
 
 		if (ntohs(eth->ether_type) != ETHERTYPE_IP)
-			return raft::proceed;
+			return false;
 	}
 
 	ip = (struct ip*) (raw_packet.pl + pkt_offset);
@@ -56,9 +64,7 @@ raft::kstatus starflow::kernels::RawPacketParser::run()
 		tcp = (struct tcphdr*) (raw_packet.pl + pkt_offset);
 		key = {ip->ip_p, ip->ip_src, ip->ip_dst, tcp->th_sport, tcp->th_dport};
 		packet.features.tcp_flags = types::Features::tcp_flags_t(tcp->th_flags);
-	} else return raft::proceed;
+	} else return false;
 
-	output["out"].push(std::make_pair(key, packet));
-
-	return raft::proceed;
+	return true;
 }
