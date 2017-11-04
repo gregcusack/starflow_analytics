@@ -26,8 +26,8 @@ int main(int argc, char** argv)
 		return raft::proceed;
 	});
 
-	starflow::kernels::LiveCapture live_capture("en10");
-	starflow::kernels::PCAPFileReader pcap_file_reader("caida2015_02_dirA.pcap");
+	starflow::kernels::LiveCapture live_capture("en0");
+	starflow::kernels::PCAPFileReader pcap_file_reader("../../test_no_tor.pcap");
 	starflow::kernels::RawPacketParser raw_packet_parser(hdr_type);
 
 	raft::map m;
