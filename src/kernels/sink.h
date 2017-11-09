@@ -31,6 +31,10 @@ namespace starflow {
 				unsigned long num_bytes = clfr.n_bytes();
 				std::string ip = key.str_desc();	
 				std::cout << "Flow: " << ip << ", # packs: " << num_packs << ", # bytes: " << num_bytes << std::endl;
+				
+				//how do i access list of packets in the CLFR?
+				//_packets is a private variable of CLFR and there is no getter...
+
 
 				return (raft::proceed);
 			}
