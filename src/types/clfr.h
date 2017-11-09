@@ -7,10 +7,18 @@
 #include "packet.h"
 #include "key.h"
 
+
 namespace starflow {
+
+	// forward declare kernels::CLFRTable to allow friend
+	// specification w/o circular dependency
+	namespace kernels { class CLFRTable; }
+
 	namespace types {
 		class CLFR
 		{
+			friend class starflow::kernels::CLFRTable;
+
 		public:
 			CLFR()                       = default;
 			CLFR(const CLFR&)            = default;
@@ -22,13 +30,16 @@ namespace starflow {
 
 			std::string str_desc() const;
 
+			bool complete() const;
+
 			unsigned long n_packets() const;
 			unsigned long n_bytes() const;
 
 			virtual ~CLFR() = default;
 
 		private:
-			std::list<types::Packet> _packets;
+			bool _complete = false;
+			std::list<types::Packet> _packets = {};
 		};
 	}
 }

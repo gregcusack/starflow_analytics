@@ -15,6 +15,11 @@ std::string starflow::types::CLFR::str_desc() const
 	return desc;
 }
 
+bool starflow::types::CLFR::complete() const
+{
+	return _complete;
+}
+
 unsigned long starflow::types::CLFR::n_packets() const
 {
 	return _packets.size();
