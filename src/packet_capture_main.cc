@@ -27,7 +27,7 @@ int main(int argc, char** argv)
 	});
 
 	starflow::kernels::LiveCapture live_capture("en0");
-	starflow::kernels::PCAPFileReader pcap_file_reader("../../test_no_tor.pcap");
+	//starflow::kernels::PCAPFileReader pcap_file_reader("../../test_no_tor.pcap");
 	starflow::kernels::RawPacketParser raw_packet_parser(hdr_type);
 
 	raft::map m;

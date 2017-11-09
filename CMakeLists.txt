@@ -27,9 +27,10 @@ add_custom_command(
 #include(cmake/exe/flow_file_redis_publisher.cmake)
 
 include(cmake/exe/pcap_flow_file_exporter.cmake)
-include(cmake/exe/read_pcap_flow.cmake)
+#include(cmake/exe/read_pcap_flow.cmake)
+include(cmake/exe/pcap_to_raw.cmake)
 #include(cmake/exe/pcap_redis_publisher.cmake)
 #include(cmake/exe/raft_example.cmake)
 #include(cmake/exe/test_publisher.cmake)
 #include(cmake/exe/test_subscriber.cmake)
-#include(cmake/exe/packet_capture.cmake)
+include(cmake/exe/packet_capture.cmake)
