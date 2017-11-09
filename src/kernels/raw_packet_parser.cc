@@ -59,10 +59,10 @@ bool starflow::kernels::RawPacketParser
 
 	if (ip->ip_p == IPPROTO_UDP) {
 		udp = (struct udphdr*) (raw_packet.pl + pkt_offset);
-		key = {ip->ip_p, ip->ip_src, ip->ip_dst, udp->uh_sport, udp->uh_dport};
+		key = {ip->ip_p, ip->ip_src, ip->ip_dst, ntohs(udp->uh_sport), ntohs(udp->uh_dport)};
 	} else if (ip->ip_p == IPPROTO_TCP) {
 		tcp = (struct tcphdr*) (raw_packet.pl + pkt_offset);
-		key = {ip->ip_p, ip->ip_src, ip->ip_dst, tcp->th_sport, tcp->th_dport};
+		key = {ip->ip_p, ip->ip_src, ip->ip_dst, ntohs(tcp->th_sport), ntohs(tcp->th_dport)};
 		packet.features.tcp_flags = types::Features::tcp_flags_t(tcp->th_flags);
 	} else return false;
 
