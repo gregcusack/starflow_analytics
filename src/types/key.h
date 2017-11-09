@@ -12,7 +12,6 @@ namespace starflow {
 		{
 		public:
 
-			//TODO: bool operator<(Key b) const;
 			//TODO:	proto::key to_proto() const;
 			//TODO:	static Key from_proto(const proto::key);
 
@@ -30,13 +29,15 @@ namespace starflow {
 
 			std::string str_desc() const;
 
+			bool operator<(Key b) const;
+
 			std::uint8_t  ip_proto = 0;
 			std::uint32_t ip_src   = 0;
 			std::uint32_t ip_dst   = 0;
 			std::uint16_t th_sport = 0;
 			std::uint16_t th_dport = 0;
 
-			virtual ~Key();
+			virtual ~Key() = default;
 
 		private:
 			std::string _uint32_ip_addr_to_str(uint32_t addr) const;

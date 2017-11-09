@@ -10,11 +10,11 @@ namespace starflow {
 		class LiveCapture : public raft::kernel
 		{
 		public:
-			explicit LiveCapture(const std::string& dev);
+			explicit LiveCapture(const std::string& dev, int snaplen = 1600, int to_ms = 500);
 			raft::kstatus run() override;
 
 		private:
-			void _connect(const std::string& dev) throw(std::runtime_error);
+			void _connect(const std::string& dev, int snaplen, int to_ms) throw(std::runtime_error);
 			pcap_t* _pcap;
 		};
 	}
