@@ -18,7 +18,11 @@ namespace starflow {
 		private:
 			std::map<types::Key, types::CLFR> _flows;
 
-			void _check_timeouts();
+			std::chrono::microseconds _to_check_interval = std::chrono::seconds(10);
+			std::chrono::microseconds _udp_to            = std::chrono::seconds(30);
+			std::chrono::microseconds _last_to_check;
+
+			void _check_timeouts(std::chrono::microseconds trigger_ts);
 			void _evict_flow(const types::Key& k);
 		};
 	}
