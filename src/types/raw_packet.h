@@ -23,7 +23,7 @@ namespace starflow {
 			RawPacket(unsigned long ts, unsigned len, const unsigned char* pl);
 			RawPacket(struct pcap_pkthdr* hdr, const u_char* pl);
 
-			unsigned long ts;
+			std::chrono::microseconds ts;
 			unsigned len;
 			const unsigned char* pl;
 		};

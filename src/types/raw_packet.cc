@@ -6,5 +6,5 @@ starflow::types::RawPacket::RawPacket(unsigned long ts, unsigned len, const unsi
 { }
 
 starflow::types::RawPacket::RawPacket(struct pcap_pkthdr* hdr, const u_char* pl)
-	: ts((unsigned) hdr->ts.tv_sec * 1000000 + (unsigned) hdr->ts.tv_usec), len(hdr->len), pl(pl)
+	: ts(hdr->ts.tv_sec * 1000000 + hdr->ts.tv_usec), len(hdr->len), pl(pl)
 { }
