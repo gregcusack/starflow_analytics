@@ -15,9 +15,18 @@ raft::kstatus starflow::kernels::LiveCapture::run()
 	const u_char* pl;
 	int rc = -1;
 
-	while ((rc = pcap_next_ex(_pcap, &hdr, &pl)) != 1);
+	while ((rc = pcap_next_ex(_pcap, &hdr, &pl)) >= 0)
+	{
+		if (rc == 1)
+			output["out"].push(types::RawPacket(hdr, pl));
+	}
 
-	output["out"].push(types::RawPacket(hdr, pl));
+	if (rc < 0) {
+		// -1: generic read error
+		// -2: end of pcap file
+		return(raft::stop);
+	}
+
 	return(raft::proceed);
 }
 

@@ -6,7 +6,7 @@
 #include <functional>
 #include <chrono>
 
-#include "../flow_table.h"
+#include "../clfr_table.h"
 #include "../flow.h"
 
 namespace starflow {

@@ -25,7 +25,7 @@ namespace starflow {
 
 	std::ostream& operator<<(std::ostream& os, types::RawPacket& p)
 	{
-		os << "starflow::RawPacket(len=" << p.len << ", ts=" << p.ts << ")";
+		os << "starflow::RawPacket(len=" << p.len << ", ts=" << p.ts.count() << ")";
 		return os;
 	}
 
