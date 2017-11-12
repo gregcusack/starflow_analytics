@@ -13,6 +13,7 @@ add_executable(pcap_to_raw src/pcap_to_raw.cc
 		src/kernels/pcap_file_reader.h src/kernels/pcap_file_reader.cc
 		src/kernels/raw_packet_parser.h src/kernels/raw_packet_parser.cc
 		src/kernels/clfr_table.h src/kernels/clfr_table.cc
+		src/kernels/clfr_counter.h
 )
 target_link_libraries(pcap_to_raw protobuf)
 target_link_libraries(pcap_to_raw raft)

@@ -14,6 +14,7 @@
 #include "flow_table.h"
 #include "kernels/clfr_table.h"
 #include "types/clfr.h"
+#include "kernels/clfr_counter.h"
 
 int main(int argc, char** argv) {
 	if(argc != 2) {
@@ -38,6 +39,7 @@ int main(int argc, char** argv) {
 	starflow::kernels::Sink<std::pair<starflow::types::Key, starflow::types::CLFR>> sink;
 	
 	starflow::kernels::CLFRTable cflr_table;	
+	//starflow::kernels::ClfrCounter clfr_counter;
 	//auto start1 = std::chrono::steady_clock::now();
 	//auto start2 = std::chrono::Steady_clock::now();
 
