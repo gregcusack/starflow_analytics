@@ -27,6 +27,7 @@ namespace starflow {
 			CLFR& operator=(CLFR&&)      = default;
 
 			void add_packet(Packet p);
+			const Packet& last_packet() const;
 
 			std::string str_desc() const;
 
