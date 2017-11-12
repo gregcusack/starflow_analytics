@@ -12,7 +12,7 @@ namespace starflow {
 		class CLFRTable : public raft::kernel
 		{
 		public:
-			explicit CLFRTable();
+			CLFRTable();
 			raft::kstatus run() override;
 
 		private:
@@ -20,10 +20,13 @@ namespace starflow {
 
 			std::chrono::microseconds _to_check_interval = std::chrono::seconds(10);
 			std::chrono::microseconds _udp_to            = std::chrono::seconds(30);
-			std::chrono::microseconds _last_to_check;
+			std::chrono::microseconds _last_to_check     = std::chrono::seconds(0);
+
+			unsigned long long _n_packets = 0;
 
 			void _check_timeouts(std::chrono::microseconds trigger_ts);
-			void _evict_flow(const types::Key& k);
+			void _evict_flow(const types::Key& k, std::chrono::microseconds evict_ts,
+							 bool complete = true);
 		};
 	}
 }

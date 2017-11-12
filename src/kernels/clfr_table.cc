@@ -24,7 +24,12 @@ raft::kstatus starflow::kernels::CLFRTable::run()
 	_flows[key].add_packet(packet);
 
 	if (key.ip_proto == IPPROTO_TCP && packet.features.tcp_flags.is_fin())
-		_evict_flow(key);
+		_evict_flow(key, packet.ts, true);
+
+	// set last t/o check to current packet ts on very first packet
+	// (avoid t/o check on empty table)
+	if (_n_packets++ == 0)
+		_last_to_check = packet.ts;
 
 	if ((packet.ts.count() - _last_to_check.count()) > _to_check_interval.count())
 		_check_timeouts(packet.ts);
@@ -34,27 +39,22 @@ raft::kstatus starflow::kernels::CLFRTable::run()
 
 void starflow::kernels::CLFRTable::_check_timeouts(std::chrono::microseconds trigger_ts)
 {
-//  TODO: implement
-//	void starflow::FlowTable::_check_flow_timeouts(std::chrono::microseconds ts)
-//	{
-//		for (auto& f : _flows) {
-//
-//			long long int since_last_packet = (ts.count() - f.second.recent_ts().count()) / 1000000;
-//
-//			if (f.first.ip_proto == IPPROTO_TCP && since_last_packet >= _tcp_timeout.count())
-//				_evict_flow(f.first, ts, eviction_type::tcp_to);
-//			else if(f.first.ip_proto == IPPROTO_UDP && since_last_packet >= _udp_timeout.count())
-//				_evict_flow(f.first, ts, eviction_type::udp_to);
-//		}
-//
-//		_last_timeout_check = ts;
-//	}
+	for (auto& f : _flows) {
+
+		long long int since_last_packet = (trigger_ts.count() - f.second.last_packet().ts.count());
+
+		if (f.first.ip_proto == IPPROTO_UDP && since_last_packet >= _udp_to.count())
+			_evict_flow(f.first, trigger_ts, true);
+	}
 
 	_last_to_check = trigger_ts;
 }
 
-void starflow::kernels::CLFRTable::_evict_flow(const types::Key& key)
+void starflow::kernels::CLFRTable::_evict_flow(const types::Key& key,
+											   std::chrono::microseconds evict_ts, bool complete)
 {
+	_flows[key]._complete = complete;
+	_flows[key]._evict_ts = evict_ts;
 	output["clfr_out"].push(std::make_pair(key, _flows[key]));
 	_flows.erase(key);
 }
