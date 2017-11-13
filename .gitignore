@@ -5,3 +5,5 @@ build
 .idea/
 src/proto/*.pb.h
 src/proto/*.pb.cc
+*.swp
+*.swo

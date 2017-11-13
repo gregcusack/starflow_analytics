@@ -28,6 +28,7 @@ namespace starflow {
 				std::uint16_t th_sport, std::uint16_t th_dport);
 
 			std::string str_desc() const;
+			std::string str_desc_for_df() const;
 
 			bool operator<(Key b) const;
 

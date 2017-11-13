@@ -36,6 +36,20 @@ namespace starflow {
 			unsigned long n_packets() const;
 			unsigned long n_bytes() const;
 
+			std::list<types::Packet>& get_pkt_list();
+			
+			/* Feature Extraction */
+			unsigned long flow_duration() const;			//Done
+			unsigned long min_interarrival_time() const;	//Done
+			unsigned long mean_interarrival_time() const;	//Done
+			unsigned long max_interarrival_time() const;
+			unsigned long stddev_interarrival_time() const;
+			unsigned long min_packet_length() const;
+			unsigned long mean_packet_length() const;		//Done
+			unsigned long max_packet_length() const;
+			unsigned long stddev_packet_length() const;
+						
+			
 			virtual ~CLFR() = default;
 
 		private:

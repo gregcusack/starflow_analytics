@@ -33,6 +33,12 @@ std::string starflow::types::Key::str_desc() const
 	return desc;
 };
 
+//function to print key to CSV for feature extraction
+std::string starflow::types::Key::str_desc_for_df() const {
+	std::string desc = std::to_string(ip_proto) + "," + _uint32_ip_addr_to_str(ip_src) + "," + _uint32_ip_addr_to_str(ip_dst) + "," + std::to_string(th_sport) + "," + std::to_string(th_dport);
+	return desc;
+}
+
 bool starflow::types::Key::operator<(starflow::types::Key b) const
 {
 	return std::tie(ip_proto, ip_src, ip_dst, th_sport, th_dport)

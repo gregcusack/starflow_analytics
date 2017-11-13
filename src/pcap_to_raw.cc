@@ -4,6 +4,7 @@
 #include <iostream>
 #include <iomanip>
 #include <fstream>
+#include <string>
 
 #include "kernels/pcap_file_reader.h"
 #include "kernels/raw_packet_parser.h"
@@ -45,6 +46,14 @@ int main(int argc, char** argv) {
 
 	//starFlow::FlowTable flow_table([&flow_table, &cflr_table, &start2](starflow::Flowtable::key_t key, starflow::Flow flow, std::chrono::microseconds ts, starflow::FlowTable::eviction_type e) {
 
+	std::ofstream data_file;
+    data_file.open("data_file.csv");
+    data_file << "proto" << "," << "ip_src" << "," << "ip_dest";
+    data_file << "," << "s_port" << "," << "d_port" << ",";
+	data_file << "#pkts" << "," << "#bytes" << ",";
+    data_file << "avg_pkt_spacing (us)" << "," << "avg_pkt_len";
+	data_file << "," << "flow_duration (us)" << ",";
+   	data_file << "min_ia_time (us)" << std::endl;
 	
 	raft::map m;
 
