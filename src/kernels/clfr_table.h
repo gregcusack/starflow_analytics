@@ -11,12 +11,14 @@ namespace starflow {
 	namespace kernels {
 		class CLFRTable : public raft::kernel
 		{
+			using flow_table_t = std::map<types::Key, types::CLFR>;
+
 		public:
 			CLFRTable();
 			raft::kstatus run() override;
 
 		private:
-			std::map<types::Key, types::CLFR> _flows;
+			flow_table_t _flows;
 
 			std::chrono::microseconds _to_check_interval = std::chrono::seconds(10);
 			std::chrono::microseconds _udp_to            = std::chrono::seconds(30);
@@ -25,8 +27,8 @@ namespace starflow {
 			unsigned long long _n_packets = 0;
 
 			void _check_timeouts(std::chrono::microseconds trigger_ts);
-			void _evict_flow(const types::Key& k, std::chrono::microseconds evict_ts,
-							 bool complete = true);
+			flow_table_t::iterator _evict_flow(const flow_table_t::iterator& i,
+				std::chrono::microseconds evict_ts, bool complete = true);
 		};
 	}
 }
