@@ -29,6 +29,8 @@ namespace starflow {
 			void add_packet(Packet p);
 			const Packet& last_packet() const;
 
+			const std::list<Packet>& packets() const;
+
 			std::string str_desc() const;
 
 			bool complete() const;

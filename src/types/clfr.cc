@@ -13,6 +13,11 @@ const starflow::types::Packet& starflow::types::CLFR::last_packet() const
 	return _packets.back();
 }
 
+const std::list<starflow::types::Packet>& starflow::types::CLFR::packets() const
+{
+	return _packets;
+}
+
 std::string starflow::types::CLFR::str_desc() const
 {
 	std::string desc = "starflow::types::CLFR(status="
