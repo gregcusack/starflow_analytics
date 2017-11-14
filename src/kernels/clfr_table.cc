@@ -18,13 +18,15 @@ raft::kstatus starflow::kernels::CLFRTable::run()
 	types::Key key       = k_p_pair.first;
 	types::Packet packet = k_p_pair.second;
 
-	if (_flows.find(key) == std::end(_flows))
-		_flows[key] = {};
+	auto i = _flows.find(key);
 
-	_flows[key].add_packet(packet);
+	if (i == std::end(_flows))
+		i = _flows.emplace(key, types::CLFR{}).first;
+
+	i->second.add_packet(packet);
 
 	if (key.ip_proto == IPPROTO_TCP && packet.features.tcp_flags.is_fin())
-		_evict_flow(key, packet.ts, true);
+		_evict_flow(i, packet.ts, true);
 
 	// set last t/o check to current packet ts on very first packet
 	// (avoid t/o check on empty table)
@@ -39,22 +41,22 @@ raft::kstatus starflow::kernels::CLFRTable::run()
 
 void starflow::kernels::CLFRTable::_check_timeouts(std::chrono::microseconds trigger_ts)
 {
-	for (auto& f : _flows) {
-
-		long long int since_last_packet = (trigger_ts.count() - f.second.last_packet().ts.count());
-
-		if (f.first.ip_proto == IPPROTO_UDP && since_last_packet >= _udp_to.count())
-			_evict_flow(f.first, trigger_ts, true);
+	for (auto i = std::begin(_flows); i != std::end(_flows);) {
+		// in-place removal requires setting iterator manually
+		long long int since_last_packet = (trigger_ts.count() - i->second.last_packet().ts.count());
+		i = (i->first.ip_proto == IPPROTO_UDP && since_last_packet >= _udp_to.count() ?
+			 _evict_flow(i, trigger_ts, true) : std::next(i, 1));
 	}
 
 	_last_to_check = trigger_ts;
 }
 
-void starflow::kernels::CLFRTable::_evict_flow(const types::Key& key,
-											   std::chrono::microseconds evict_ts, bool complete)
+starflow::kernels::CLFRTable::flow_table_t::iterator
+	starflow::kernels::CLFRTable::_evict_flow(const flow_table_t::iterator& i,
+		std::chrono::microseconds evict_ts, bool complete)
 {
-	_flows[key]._complete = complete;
-	_flows[key]._evict_ts = evict_ts;
-	output["clfr_out"].push(std::make_pair(key, _flows[key]));
-	_flows.erase(key);
+	i->second._complete = complete;
+	i->second._evict_ts = evict_ts;
+	output["clfr_out"].push(*i);
+	return _flows.erase(i);
 }
