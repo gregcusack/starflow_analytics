@@ -50,6 +50,7 @@ int main(int argc, char** argv) {
 	data_file << "flow_duration (us)" << ",";
 	data_file << "min_ia_time (us)" << ",";
 	data_file << "mean_ia_time (us)" << ",";
+	data_file << "max_ia_time (us)" << ",";
 	data_file << "mean_pkt_len (bytes)" << ",";
 	data_file << std::endl;
 	

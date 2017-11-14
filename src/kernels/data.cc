@@ -22,8 +22,10 @@ raft::kstatus starflow::kernels::Data::run() {
 	unsigned long flow_dur = flow_duration(clfr_pkts);
 	unsigned long min_ia_time = min_interarrival_time(clfr_pkts);
 	unsigned long mean_ia_time = mean_interarrival_time(clfr_pkts);
+	unsigned long max_ia_time = max_interarrival_time(clfr_pkts);
 	unsigned long mean_pkt_len = mean_packet_length(clfr_pkts);
-
+	//May want to add a check to make sure max >= min
+	
 	//implement this as a member function that just prints as
 	//as comma separated values to be printed to CSV
 	std::ofstream data_file;
@@ -31,16 +33,19 @@ raft::kstatus starflow::kernels::Data::run() {
 	data_file << key.str_desc_for_df() << "," << num_packs;
 	data_file << "," << num_bytes << "," << flow_dur;
 	data_file << "," << min_ia_time << "," << mean_ia_time;
+	data_file << "," << max_ia_time;
 	data_file << "," << mean_pkt_len;
 	data_file << std::endl;
 	
 	return (raft::proceed);
 }
 
+/* Flow Duration */
 unsigned long starflow::kernels::Data::flow_duration(const std::list<types::Packet>& packets) const {
 	return std::chrono::duration_cast<std::chrono::microseconds>(packets.back().ts - packets.front().ts).count();
 }
 
+/* Min. Interarrival Time */
 unsigned long starflow::kernels::Data::min_interarrival_time(const std::list<types::Packet>& packets) const {
 	unsigned long diff = ULONG_MAX;
 	unsigned long tmp;
@@ -48,7 +53,7 @@ unsigned long starflow::kernels::Data::min_interarrival_time(const std::list<typ
 	if(packets.size() == 1)
 		return 0;
 	for(itr = packets.begin(); itr != packets.end(); ++itr) {
-		if((itr != packets.end()) && (next(itr) == packets.end()))
+		if(next(itr) == packets.end())
 			return diff;
 		tmp = std::chrono::duration_cast<std::chrono::microseconds>(next(itr)->ts - itr->ts).count(); //maybe make it count() only once at end...???
 		if(tmp < diff)
@@ -57,6 +62,7 @@ unsigned long starflow::kernels::Data::min_interarrival_time(const std::list<typ
 	return diff;	
 }
 
+/* Mean Interarrival Time */
 unsigned long starflow::kernels::Data::mean_interarrival_time(const std::list<types::Packet>& packets) const {
 	std::chrono::microseconds prev;
 	unsigned long total_diff = 0;
@@ -74,6 +80,24 @@ unsigned long starflow::kernels::Data::mean_interarrival_time(const std::list<ty
 	return total_diff/packets.size();
 }
 
+/* Max Interarrival Time */
+unsigned long starflow::kernels::Data::max_interarrival_time(const std::list<types::Packet>& packets) const {
+	unsigned long diff = 0;
+	unsigned long tmp;
+	std::list<starflow::types::Packet>::const_iterator itr;
+	if(packets.size() == 1)
+		return 0;
+	for(itr = packets.begin(); itr != packets.end(); ++itr) {
+		if(next(itr) == packets.end())
+			return diff;
+		tmp = std::chrono::duration_cast<std::chrono::microseconds>(next(itr)->ts - itr->ts).count();
+		if(tmp > diff)
+			diff = tmp;
+	}
+	return diff;
+}
+
+/* Mean Packet Length */
 unsigned long starflow::kernels::Data::mean_packet_length(const std::list<types::Packet>& packets) const {
 	unsigned long total_len = 0;
 	for(auto const& itr : packets)

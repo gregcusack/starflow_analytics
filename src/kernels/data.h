@@ -20,7 +20,7 @@ namespace starflow {
 			unsigned long flow_duration(const std::list<types::Packet>& packets) const;				//Done
 			unsigned long min_interarrival_time(const std::list<types::Packet>& packets) const;		//Done
 			unsigned long mean_interarrival_time(const std::list<types::Packet>& packets) const;	//Done
-			unsigned long max_interarrival_time(const std::list<types::Packet>& packets) const;
+			unsigned long max_interarrival_time(const std::list<types::Packet>& packets) const;		//Done
 			unsigned long stddev_interarrival_time(const std::list<types::Packet>& packets) const;
 			unsigned long min_packet_length(const std::list<types::Packet>& packets) const;
 			unsigned long mean_packet_length(const std::list<types::Packet>& packets) const;		//Done
