@@ -8,14 +8,14 @@
 
 #include "kernels/pcap_file_reader.h"
 #include "kernels/raw_packet_parser.h"
-#include "kernels/sink.h"
+//#include "kernels/sink.h"
+#include "kernels/data.h"
 #include "types/key.h"
 #include "types/packet.h"
 #include "kernels/printer.h"
 #include "flow_table.h"
 #include "kernels/clfr_table.h"
 #include "types/clfr.h"
-#include "kernels/clfr_counter.h"
 
 int main(int argc, char** argv) {
 	if(argc != 2) {
@@ -37,28 +37,26 @@ int main(int argc, char** argv) {
 
 	starflow::kernels::PCAPFileReader pcap_reader(argv[1]);
 	starflow::kernels::RawPacketParser packet_parser;
-	starflow::kernels::Sink<std::pair<starflow::types::Key, starflow::types::CLFR>> sink;
-	
+	//starflow::kernels::Sink<std::pair<starflow::types::Key, starflow::types::CLFR>> sink;
+	starflow::kernels::Data data;
 	starflow::kernels::CLFRTable cflr_table;	
-	//starflow::kernels::ClfrCounter clfr_counter;
-	//auto start1 = std::chrono::steady_clock::now();
-	//auto start2 = std::chrono::Steady_clock::now();
 
-	//starFlow::FlowTable flow_table([&flow_table, &cflr_table, &start2](starflow::Flowtable::key_t key, starflow::Flow flow, std::chrono::microseconds ts, starflow::FlowTable::eviction_type e) {
 
 	std::ofstream data_file;
     data_file.open("data_file.csv");
     data_file << "proto" << "," << "ip_src" << "," << "ip_dest";
     data_file << "," << "s_port" << "," << "d_port" << ",";
 	data_file << "#pkts" << "," << "#bytes" << ",";
-    data_file << "avg_pkt_spacing (us)" << "," << "avg_pkt_len";
-	data_file << "," << "flow_duration (us)" << ",";
-   	data_file << "min_ia_time (us)" << std::endl;
+	data_file << "flow_duration (us)" << ",";
+	data_file << "min_ia_time (us)" << ",";
+	data_file << "mean_ia_time (us)" << ",";
+	data_file << "mean_pkt_len (bytes)" << ",";
+	data_file << std::endl;
 	
 	raft::map m;
 
 	//m += pcap_reader["out"] >> packet_parser["in"] >> printer;
-	m += pcap_reader >> packet_parser["in"] >> cflr_table["packet_in"] >> sink;// >> printer;
+	m += pcap_reader >> packet_parser["in"] >> cflr_table["packet_in"] >> data;// >> printer;
 	m.exe();
 	return 0;
 }
