@@ -11,6 +11,7 @@ add_executable(packet_capture
         src/kernels/raw_packet_parser.h src/kernels/raw_packet_parser.cc
         src/kernels/printer.h
         src/kernels/clfr_table.h src/kernels/clfr_table.cc
+        src/kernels/tzsp_receiver.h src/kernels/tzsp_receiver.cc
         src/packet_capture_main.cc)
 
 target_link_libraries(packet_capture protobuf)
