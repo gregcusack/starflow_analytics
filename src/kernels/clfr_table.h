@@ -19,21 +19,28 @@ namespace starflow {
 			CLFRTable();
 			raft::kstatus run() override;
 
+			void set_to_check_interval(std::chrono::seconds to);
+			void set_udp_timeout(std::chrono::seconds to);
+
+			void set_incomplete_evict_policy(incomplete_evict_policy p);
+			void set_incomplete_evict_to(std::chrono::seconds to);
+			void set_incomplete_evict_pkt_count(unsigned long c);
+
 		private:
 			flow_table_t _flows;
 
-			std::chrono::microseconds _to_check_interval    = std::chrono::seconds(10);
-			std::chrono::microseconds _udp_to               = std::chrono::seconds(30);
-			std::chrono::microseconds _last_to_check        = std::chrono::seconds(0);
+			std::chrono::microseconds _to_check_interval     = std::chrono::seconds(10);
+			std::chrono::microseconds _udp_to                = std::chrono::seconds(30);
+			std::chrono::microseconds _last_to_check         = std::chrono::seconds(0);
 
-			incomplete_evict_policy _evict_policy           = incomplete_evict_policy::none;
-			std::chrono::microseconds _incomplete_evict_to  = std::chrono::seconds(10);
-			unsigned long _incomplete_evict_pkt_count       = 50;
+			incomplete_evict_policy _incomplete_evict_policy = incomplete_evict_policy::none;
+			std::chrono::microseconds _incomplete_evict_to   = std::chrono::seconds(10);
+			unsigned long _incomplete_evict_pkt_count        = 50;
 
-			unsigned long long _n_packets_processed         = 0;
-			unsigned long long _n_flows_processed           = 0;
-			unsigned long long _n_packets                   = 0;
-			unsigned long long _n_flows                     = 0;
+			unsigned long long _n_packets_processed          = 0;
+			unsigned long long _n_flows_processed            = 0;
+			unsigned long long _n_packets                    = 0;
+			unsigned long long _n_flows                      = 0;
 
 			void _check_timeouts(std::chrono::microseconds trigger_ts);
 

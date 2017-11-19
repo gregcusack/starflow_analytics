@@ -39,6 +39,31 @@ raft::kstatus starflow::kernels::CLFRTable::run()
 	return raft::proceed;
 }
 
+void starflow::kernels::CLFRTable::set_to_check_interval(std::chrono::seconds to)
+{
+	_to_check_interval = to;
+}
+
+void starflow::kernels::CLFRTable::set_udp_timeout(std::chrono::seconds to)
+{
+	_udp_to = to;
+}
+
+void starflow::kernels::CLFRTable::set_incomplete_evict_policy(incomplete_evict_policy p)
+{
+	_incomplete_evict_policy = p;
+}
+
+void starflow::kernels::CLFRTable::set_incomplete_evict_to(std::chrono::seconds to)
+{
+	_incomplete_evict_to = to;
+}
+
+void starflow::kernels::CLFRTable::set_incomplete_evict_pkt_count(unsigned long c)
+{
+	_incomplete_evict_pkt_count = c;
+}
+
 void starflow::kernels::CLFRTable::_check_timeouts(std::chrono::microseconds trigger_ts)
 {
 	for (auto i = std::begin(_flows); i != std::end(_flows);) {
