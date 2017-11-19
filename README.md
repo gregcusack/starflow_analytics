@@ -18,7 +18,19 @@ Requires C++14 compatible compiler.
     make
 
 ---
-### Components
+### Kernels
+
+|Kernel Name         |Input                                 |Output                                |
+|--------------------|--------------------------------------|--------------------------------------|
+|CLFRTable           |Key, Packet                           |CLFR                                  |
+|LiveCapture         |*none*                                |RawPacket                             |
+|PCAPFileReader      |*none*                                |RawPacket                             |
+|RawPacketParser     |RawPacket                             |Key, Packet                           |
+|TZSPReceiver        |*none*                                |RawPacket                             |
+
+
+
+### Components  [deprecated]
 
 #### export::PCAPReplay (src/import/pcap_replay.h)
 
@@ -59,12 +71,7 @@ Implements a Redis client that connects to a redis server and reads flow records
 Reads a protobuf file and replays the flows based on eviction timestamps.
 
 ---
-### Docker Redis Image
-        
-    docker build .
-    docker run -itp 6379:6379 redis
 
----
 ### References
 
 [1] https://github.com/RaftLib/RaftLib
