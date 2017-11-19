@@ -19,7 +19,6 @@ namespace starflow {
 			RawPacket& operator=(const RawPacket&) = default;
 			RawPacket& operator=(RawPacket&&) = default;
 
-
 			RawPacket(unsigned long ts, unsigned len, const unsigned char* pl);
 			RawPacket(struct pcap_pkthdr* hdr, const u_char* pl);
 

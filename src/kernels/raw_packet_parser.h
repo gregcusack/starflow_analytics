@@ -14,12 +14,19 @@ namespace starflow {
 		{
 		public:
 			enum class outer_header_type { eth, ip };
+			enum class capture_length { full, trunc };
 
-			explicit RawPacketParser(outer_header_type t = outer_header_type::eth);
+			explicit RawPacketParser(outer_header_type t = outer_header_type::eth,
+									 capture_length l = capture_length::full);
+
 			raft::kstatus run() override;
+
+			void set_outer_header_type(outer_header_type t);
+			void set_capture_length(capture_length l);
 
 		private:
 			outer_header_type _outer_header;
+			capture_length _capture_length;
 			bool _parse_packet(types::Key& key, types::RawPacket& raw_packet, types::Packet& packet);
 		};
 	}

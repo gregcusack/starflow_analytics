@@ -12,8 +12,8 @@
 
 #include "raw_packet_parser.h"
 
-starflow::kernels::RawPacketParser::RawPacketParser(outer_header_type t)
-	: _outer_header(t)
+starflow::kernels::RawPacketParser::RawPacketParser(outer_header_type t, capture_length l)
+	: _outer_header(t), _capture_length(l)
 {
 	input.add_port<types::RawPacket>("in");
 	output.add_port<std::pair<types::Key, types::Packet>>("out");
@@ -25,12 +25,23 @@ raft::kstatus starflow::kernels::RawPacketParser::run()
 	types::RawPacket raw_packet {};
 
 	input["in"].pop(raw_packet);
+
 	types::Packet packet(raw_packet.ts, raw_packet.len);
 
 	if (_parse_packet(key, raw_packet, packet))
 		output["out"].push(std::make_pair(key, packet));
 
 	return raft::proceed;
+}
+
+void starflow::kernels::RawPacketParser::set_outer_header_type(outer_header_type t)
+{
+	_outer_header = t;
+}
+
+void starflow::kernels::RawPacketParser::set_capture_length(capture_length l)
+{
+	_capture_length = l;
 }
 
 bool starflow::kernels::RawPacketParser
@@ -65,6 +76,9 @@ bool starflow::kernels::RawPacketParser
 		key = {ip->ip_p, ip->ip_src, ip->ip_dst, ntohs(tcp->th_sport), ntohs(tcp->th_dport)};
 		packet.features.tcp_flags = types::Features::tcp_flags_t(tcp->th_flags);
 	} else return false;
+
+	if (_capture_length == capture_length::trunc)
+		packet.len = ntohs(ip->ip_len)+(_outer_header == outer_header_type::eth ? sizeof(eth) : 0);
 
 	return true;
 }

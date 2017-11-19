@@ -30,7 +30,6 @@ raft::kstatus starflow::kernels::CLFRTable::run()
 	} else if (_incomplete_evict_policy == incomplete_evict_policy::pkt_count
 		&& i->second.n_packets() >= _incomplete_evict_pkt_count) {
 		_evict_flow(i, packet.ts, false);
-
 	}
 
 	// set last t/o check to current packet ts on very first packet
