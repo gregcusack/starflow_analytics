@@ -3,6 +3,7 @@
 #include "data.h"
 #include <climits>
 #include <iterator>
+#include <math.h>
 
 starflow::kernels::Data::Data() : raft::kernel() {
 	input.add_port<std::pair<types::Key, types::CLFR>>("in");
@@ -23,7 +24,12 @@ raft::kstatus starflow::kernels::Data::run() {
 	unsigned long min_ia_time = min_interarrival_time(clfr_pkts);
 	unsigned long mean_ia_time = mean_interarrival_time(clfr_pkts);
 	unsigned long max_ia_time = max_interarrival_time(clfr_pkts);
+	unsigned long stddev_ia_time = stddev_interarrival_time(clfr_pkts);
+	unsigned long min_pkt_len = min_packet_length(clfr_pkts);
 	unsigned long mean_pkt_len = mean_packet_length(clfr_pkts);
+	unsigned long max_pkt_len = max_packet_length(clfr_pkts);
+	unsigned long stddev_pkt_len = stddev_packet_length(clfr_pkts);
+
 	//May want to add a check to make sure max >= min
 	
 	//implement this as a member function that just prints as
@@ -34,7 +40,11 @@ raft::kstatus starflow::kernels::Data::run() {
 	data_file << "," << num_bytes << "," << flow_dur;
 	data_file << "," << min_ia_time << "," << mean_ia_time;
 	data_file << "," << max_ia_time;
+	data_file << "," << stddev_ia_time;
+	data_file << "," << min_pkt_len;
 	data_file << "," << mean_pkt_len;
+	data_file << "," << max_pkt_len;
+	data_file << "," << stddev_pkt_len;
 	data_file << std::endl;
 	
 	return (raft::proceed);
@@ -97,6 +107,37 @@ unsigned long starflow::kernels::Data::max_interarrival_time(const std::list<typ
 	return diff;
 }
 
+
+unsigned long starflow::kernels::Data::stddev_interarrival_time(const std::list<types::Packet>& packets) const {
+	unsigned long diff;
+	unsigned long mean = starflow::kernels::Data::mean_interarrival_time(packets);
+	unsigned long stddev = 0;
+	std::chrono::microseconds prev;
+	bool flag = true;
+	for(auto const& itr : packets) {
+		//better way to do this??  likely/unlikely macros???
+		if(flag) {
+			prev = itr.ts;
+			flag = false;
+			continue;
+		}
+		diff = std::chrono::duration_cast<std::chrono::microseconds>(itr.ts - prev).count();
+		stddev += pow((long)(diff - mean), 2);
+		prev = itr.ts;
+	}
+	return sqrt(stddev/packets.size());
+
+}
+
+unsigned long starflow::kernels::Data::min_packet_length(const std::list<types::Packet>& packets) const {
+	unsigned long min = packets.front().len;
+	for(auto const& itr : packets) {
+		if(itr.len < min)
+			min = itr.len;
+	}
+	return min;
+}
+
 /* Mean Packet Length */
 unsigned long starflow::kernels::Data::mean_packet_length(const std::list<types::Packet>& packets) const {
 	unsigned long total_len = 0;
@@ -104,3 +145,26 @@ unsigned long starflow::kernels::Data::mean_packet_length(const std::list<types:
 		total_len += itr.len;
 	return total_len/packets.size();
 }
+
+unsigned long starflow::kernels::Data::max_packet_length(const std::list<types::Packet>& packets) const {
+	unsigned long max = 0;
+	for(auto const& itr : packets) {
+		if(itr.len > max)
+			max = itr.len;
+	}
+	return max;
+}
+
+unsigned long starflow::kernels::Data::stddev_packet_length(const std::list<types::Packet>& packets) const {
+	unsigned long mean;
+	unsigned long stddev = 0;
+	mean = starflow::kernels::Data::mean_packet_length(packets);
+	for(auto const& itr : packets)
+		stddev += pow((long)(itr.len - mean), 2);
+	return sqrt(stddev/packets.size());
+}
+
+
+
+
+
