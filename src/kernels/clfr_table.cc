@@ -25,12 +25,17 @@ raft::kstatus starflow::kernels::CLFRTable::run()
 
 	i->second.add_packet(packet);
 
-	if (key.ip_proto == IPPROTO_TCP && packet.features.tcp_flags.is_fin())
+	if (key.ip_proto == IPPROTO_TCP && packet.features.tcp_flags.is_fin()) {
 		_evict_flow(i, packet.ts, true);
+	} else if (_incomplete_evict_policy == incomplete_evict_policy::pkt_count
+		&& i->second.n_packets() >= _incomplete_evict_pkt_count) {
+		_evict_flow(i, packet.ts, false);
+
+	}
 
 	// set last t/o check to current packet ts on very first packet
 	// (avoid t/o check on empty table)
-	if (_n_packets++ == 0)
+	if (_n_packets_processed++ == 0)
 		_last_to_check = packet.ts;
 
 	if ((packet.ts.count() - _last_to_check.count()) > _to_check_interval.count())
@@ -57,6 +62,9 @@ void starflow::kernels::CLFRTable::set_incomplete_evict_policy(incomplete_evict_
 void starflow::kernels::CLFRTable::set_incomplete_evict_to(std::chrono::seconds to)
 {
 	_incomplete_evict_to = to;
+
+	if (_to_check_interval > _incomplete_evict_to)
+		_to_check_interval = _incomplete_evict_to;
 }
 
 void starflow::kernels::CLFRTable::set_incomplete_evict_pkt_count(unsigned long c)
@@ -67,10 +75,19 @@ void starflow::kernels::CLFRTable::set_incomplete_evict_pkt_count(unsigned long 
 void starflow::kernels::CLFRTable::_check_timeouts(std::chrono::microseconds trigger_ts)
 {
 	for (auto i = std::begin(_flows); i != std::end(_flows);) {
+
 		// in-place removal requires setting iterator manually
-		long long int since_last_packet = (trigger_ts.count() - i->second.last_packet().ts.count());
-		i = (i->first.ip_proto == IPPROTO_UDP && since_last_packet >= _udp_to.count() ?
-			 _evict_flow(i, trigger_ts, true) : std::next(i, 1));
+		long long int since_last_packet
+			= (trigger_ts.count() - i->second.last_packet().ts.count());
+
+		if (i->first.ip_proto == IPPROTO_UDP && since_last_packet >= _udp_to.count()) {
+			i = _evict_flow(i, trigger_ts, true);
+		} else if (_incomplete_evict_policy == incomplete_evict_policy::to
+				 && since_last_packet >= _incomplete_evict_to.count()) {
+			i = _evict_flow(i, trigger_ts, false);
+		} else {
+			i = std::next(i, 1);
+		}
 	}
 
 	_last_to_check = trigger_ts;

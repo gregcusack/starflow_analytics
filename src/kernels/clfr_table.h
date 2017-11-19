@@ -12,10 +12,11 @@ namespace starflow {
 
 		class CLFRTable : public raft::kernel
 		{
-			enum class incomplete_evict_policy { none, to, pkt_count };
 			using flow_table_t = std::map<types::Key, types::CLFR>;
 
 		public:
+			enum class incomplete_evict_policy { none, to, pkt_count };
+
 			CLFRTable();
 			raft::kstatus run() override;
 
