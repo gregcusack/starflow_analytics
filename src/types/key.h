@@ -29,6 +29,8 @@ namespace starflow {
 
 			std::string str_desc() const;
 			std::string str_desc_for_df() const;
+			std::string get_ip_src() const;
+			std::string get_dst_src() const;
 
 			bool operator<(Key b) const;
 

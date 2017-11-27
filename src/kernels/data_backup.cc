@@ -1,10 +1,9 @@
 #include <utility>
 
 #include "data.h"
-#include <cfloat>
+#include <climits>
 #include <iterator>
 #include <math.h>
-#include <string>
 
 starflow::kernels::Data::Data() : raft::kernel() {
 	input.add_port<std::pair<types::Key, types::CLFR>>("in");
@@ -18,31 +17,11 @@ raft::kstatus starflow::kernels::Data::run() {
 
 	unsigned long num_packs = clfr.n_packets();
 	unsigned long num_bytes = clfr.n_bytes();
-	std::string ip = key.str_desc();   
+	std::string ip = key.str_desc();    
 
 	std::list<types::Packet> clfr_pkts = clfr.packets();
 	unsigned long flow_dur = flow_duration(clfr_pkts);
 	unsigned long min_ia_time = min_interarrival_time(clfr_pkts);
-	//std::cout << "here" << std::endl;
-	/*
-	if(key.get_ip_src() == "209.124.66.6") {
-		std::cout << "----------------begin----------" << std::endl;
-		std::cout << key.get_ip_src() << std::endl;
-		unsigned long mean_ia_time = mean_interarrival_time(clfr_pkts);
-		unsigned long min_pkt_len = min_packet_length(clfr_pkts);
-		for(auto const& itr : clfr_pkts) {
-			std::cout << "-----" << std::endl;
-			std::cout << itr.len << ", " << itr.ts.count() << std::endl;
-			std::cout << itr.features.tcp_flags.is_ack() << std::endl;
-			std::cout << itr.features.tcp_flags.is_syn() << std::endl;
-			std::cout << itr.features.tcp_flags.is_psh() << std::endl;
-			std::cout << itr.features.tcp_flags.is_fin() << std::endl;
-			std::cout << "-----" << std::endl;
-			//tcp_flags_t().str_desc() << std::endl;
-		}
-		std::cout << "----------------end----------" << std::endl;
-	}
-	*/
 	unsigned long mean_ia_time = mean_interarrival_time(clfr_pkts);
 	unsigned long max_ia_time = max_interarrival_time(clfr_pkts);
 	unsigned long stddev_ia_time = stddev_interarrival_time(clfr_pkts);
@@ -50,24 +29,11 @@ raft::kstatus starflow::kernels::Data::run() {
 	unsigned long mean_pkt_len = mean_packet_length(clfr_pkts);
 	unsigned long max_pkt_len = max_packet_length(clfr_pkts);
 	unsigned long stddev_pkt_len = stddev_packet_length(clfr_pkts);
-	/*
-	if(key.ip_src == 1712523786 && key.ip_dst == 1253695156) {
-		std::cout << key.ip_src << ", " << key.ip_dst << ", " << key.th_sport << ", " << key.th_dport << std::endl;
-		std::cout << max_pkt_len << std::endl;
-		std::cout << "num packets in clfr: " << clfr.n_packets() << std::endl;
-		for(auto const& itr : clfr_pkts) {
-			std::cout << itr.len << ", " << itr.ts.count() << std::endl;
-			//std::cout << itr.features.tcp_flags.is_ack() << std::endl;
-			//tcp_flags_t().str_desc() << std::endl;
-		}
-		//std::cout << clfr.packets().features.str_desc() << std::endl;
-	}
-	*/
+
 	//May want to add a check to make sure max >= min
 	
 	//implement this as a member function that just prints as
 	//as comma separated values to be printed to CSV
-/*
 	std::ofstream data_file;
 	data_file.open("data_file.csv",std::ios_base::app);
 	data_file << key.str_desc_for_df() << "," << num_packs;
@@ -79,30 +45,23 @@ raft::kstatus starflow::kernels::Data::run() {
 	data_file << "," << mean_pkt_len;
 	data_file << "," << max_pkt_len;
 	data_file << "," << stddev_pkt_len;
-*/
-	/*
-	if(key.get_ip_src() == "46.162.24.26") {
-
-		std::cout << "here" << std::endl;
-	}
-	*/
-	//data_file << std::endl;
-
+	data_file << std::endl;
+	
 	return (raft::proceed);
 }
 
 /* Flow Duration */
-float starflow::kernels::Data::flow_duration(const std::list<types::Packet>& packets) const {
+unsigned long starflow::kernels::Data::flow_duration(const std::list<types::Packet>& packets) const {
 	return std::chrono::duration_cast<std::chrono::microseconds>(packets.back().ts - packets.front().ts).count();
 }
 
 /* Min. Interarrival Time */
-float starflow::kernels::Data::min_interarrival_time(const std::list<types::Packet>& packets) const {
+unsigned long starflow::kernels::Data::min_interarrival_time(const std::list<types::Packet>& packets) const {
+	unsigned long diff = ULONG_MAX;
+	unsigned long tmp;
+	std::list<starflow::types::Packet>::const_iterator itr;
 	if(packets.size() == 1)
 		return 0;
-	float diff = FLT_MAX;
-	float tmp;
-	std::list<starflow::types::Packet>::const_iterator itr;
 	for(itr = packets.begin(); itr != packets.end(); ++itr) {
 		if(next(itr) == packets.end())
 			return diff;
@@ -114,35 +73,30 @@ float starflow::kernels::Data::min_interarrival_time(const std::list<types::Pack
 }
 
 /* Mean Interarrival Time */
-float starflow::kernels::Data::mean_interarrival_time(const std::list<types::Packet>& packets) const {
-	if(packets.size() == 1)
-		return 0;
+unsigned long starflow::kernels::Data::mean_interarrival_time(const std::list<types::Packet>& packets) const {
 	std::chrono::microseconds prev;
-	float total_diff = 0;
+	unsigned long total_diff = 0;
 	bool flag = true;
 	for(auto const& itr : packets) {
-		//std::cout << "ts: " << std::chrono::microseconds(itr.ts).count() << std::endl;
 		//better way to do this??  likely/unlikely macros???
 		if(flag) {
 			prev = itr.ts;
 			flag = false;
 			continue;
 		}
-		//std::cout << "diff: " << std::chrono::duration_cast<std::chrono::microseconds>(itr.ts - prev).count() << std::endl;
 		total_diff += std::chrono::duration_cast<std::chrono::microseconds>(itr.ts - prev).count();
 		prev = itr.ts;
 	}
-	//std::cout << "#pkts: " << packets.size() << std::endl;
-	return total_diff/(packets.size()-1);
+	return total_diff/packets.size();
 }
 
 /* Max Interarrival Time */
-float starflow::kernels::Data::max_interarrival_time(const std::list<types::Packet>& packets) const {
+unsigned long starflow::kernels::Data::max_interarrival_time(const std::list<types::Packet>& packets) const {
+	unsigned long diff = 0;
+	unsigned long tmp;
+	std::list<starflow::types::Packet>::const_iterator itr;
 	if(packets.size() == 1)
 		return 0;
-	float diff = 0;
-	float tmp;
-	std::list<starflow::types::Packet>::const_iterator itr;
 	for(itr = packets.begin(); itr != packets.end(); ++itr) {
 		if(next(itr) == packets.end())
 			return diff;
@@ -154,12 +108,10 @@ float starflow::kernels::Data::max_interarrival_time(const std::list<types::Pack
 }
 
 
-float starflow::kernels::Data::stddev_interarrival_time(const std::list<types::Packet>& packets) const {
-	if(packets.size() == 1)
-		return 0;	
-	float diff;
-	float mean = starflow::kernels::Data::mean_interarrival_time(packets);
-	float stddev = 0;
+unsigned long starflow::kernels::Data::stddev_interarrival_time(const std::list<types::Packet>& packets) const {
+	unsigned long diff;
+	unsigned long mean = starflow::kernels::Data::mean_interarrival_time(packets);
+	unsigned long stddev = 0;
 	std::chrono::microseconds prev;
 	bool flag = true;
 	for(auto const& itr : packets) {
@@ -173,14 +125,13 @@ float starflow::kernels::Data::stddev_interarrival_time(const std::list<types::P
 		stddev += pow((long)(diff - mean), 2);
 		prev = itr.ts;
 	}
-	return sqrt(stddev/(packets.size()-1));
+	return sqrt(stddev/packets.size());
 
 }
 
 unsigned long starflow::kernels::Data::min_packet_length(const std::list<types::Packet>& packets) const {
 	unsigned long min = packets.front().len;
 	for(auto const& itr : packets) {
-		//std::cout << "len: " << itr.len << std::endl;
 		if(itr.len < min)
 			min = itr.len;
 	}

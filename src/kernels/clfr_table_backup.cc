@@ -18,12 +18,6 @@ raft::kstatus starflow::kernels::CLFRTable::run()
 	types::Key key       = k_p_pair.first;
 	types::Packet packet = k_p_pair.second;
 
-	//Still wrong here (go to RawPacketParser)
-	if(key.get_ip_src() == "209.124.66.6") {
-		std::cout << "src IP: " << key.get_ip_src() << std::endl;
-		std::cout << "packet length: " << packet.len << std::endl;
-	}
-
 	auto i = _flows.find(key);
 
 	if (i == std::end(_flows))
@@ -103,24 +97,6 @@ starflow::kernels::CLFRTable::flow_table_t::iterator
 	starflow::kernels::CLFRTable::_evict_flow(const flow_table_t::iterator& i,
 		std::chrono::microseconds evict_ts, bool complete)
 {
-	//std::cout << "here" << std::endl;
-	types::Key key = i->first;
-	//std::cout << "-----------------------------------" << std::endl;
-	//if(key.get_ip_src() == "192.168.253.231" && key.get_ip_dst() == "224.0.0.251") {
-	/*
-	if(key.get_ip_src() =="209.124.66.6") {
-		std::cout << "IP src: " << key.get_ip_src() << std::endl;
-		std::cout << "IP src: " << key.get_ip_dst() << std::endl;
-		std::cout << "# pkts in flow: " << i->second.n_packets() << std::endl;
-		std::cout << "# pkts in flow: " << i->second.n_bytes() << std::endl;
-		const std::list<types::Packet>& packets = i->second.packets();
-		for(auto const& itr : packets) {
-			std::cout << itr.len << std::endl;
-		}
-		std::cout << "################################################################" << std::endl;
-	}
-	*/
-	//std::cout << "-----------------------------------" << std::endl;
 	i->second._complete = complete;
 	i->second._evict_ts = evict_ts;
 	output["clfr_out"].push(*i);

@@ -49,3 +49,10 @@ std::string starflow::types::Key::_uint32_ip_addr_to_str(uint32_t addr) const
 {
 	return std::string(inet_ntoa({ .s_addr = addr }));
 }
+
+std::string starflow::types::Key::get_ip_src() const {
+	return _uint32_ip_addr_to_str(ip_src);
+}
+std::string starflow::types::Key::get_dst_src() const {
+	return _uint32_ip_addr_to_str(ip_dst);
+}
