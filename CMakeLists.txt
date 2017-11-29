@@ -9,7 +9,6 @@ include(cmake/common.cmake)
 
 include(cmake/dep/protobuf.cmake)
 include(cmake/dep/pcap.cmake)
-#include(cmake/dep/cpp_redis.cmake)
 include(cmake/dep/raft.cmake)
 include(cmake/dep/catch.cmake)
 
@@ -27,12 +26,6 @@ add_custom_command(
 #include(cmake/exe/clfr_converter.cmake)
 #include(cmake/exe/clfr_driver.cmake)
 
-#include(cmake/exe/flow_file_redis_publisher.cmake)
-
 include(cmake/exe/pcap_flow_file_exporter.cmake)
-#include(cmake/exe/pcap_redis_publisher.cmake)
-#include(cmake/exe/raft_example.cmake)
-#include(cmake/exe/test_publisher.cmake)
-#include(cmake/exe/test_subscriber.cmake)
 include(cmake/exe/packet_capture.cmake)
 include(cmake/exe/test_runner.cmake)
