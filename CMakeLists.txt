@@ -9,8 +9,9 @@ include(cmake/common.cmake)
 
 include(cmake/dep/protobuf.cmake)
 include(cmake/dep/pcap.cmake)
-include(cmake/dep/cpp_redis.cmake)
+#include(cmake/dep/cpp_redis.cmake)
 include(cmake/dep/raft.cmake)
+include(cmake/dep/catch.cmake)
 
 add_custom_command(
         OUTPUT
@@ -32,3 +33,4 @@ include(cmake/exe/pcap_flow_file_exporter.cmake)
 #include(cmake/exe/test_publisher.cmake)
 #include(cmake/exe/test_subscriber.cmake)
 include(cmake/exe/packet_capture.cmake)
+include(cmake/exe/test_runner.cmake)
