@@ -13,6 +13,8 @@ include(cmake/dep/pcap.cmake)
 include(cmake/dep/raft.cmake)
 include(cmake/dep/catch.cmake)
 
+file(MAKE_DIRECTORY ${CMAKE_HOME_DIRECTORY}/src/proto)
+
 add_custom_command(
         OUTPUT
             "${CMAKE_CURRENT_LIST_DIR}/src/proto/starflow.pb.h"

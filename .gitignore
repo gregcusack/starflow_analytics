@@ -3,6 +3,5 @@ cmake-build-release
 build
 .DS_Store
 .idea/
-src/proto/*.pb.h
-src/proto/*.pb.cc
+src/proto/
 test/include/catch.h
