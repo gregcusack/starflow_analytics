@@ -6,6 +6,7 @@ set(TEST_SRC
 
 add_executable(test_runner
         test/test_runner_main.cc
+        test/include/raw_packet_data.h
         src/helpers.h src/helpers.cc
         ${MODULES_SRC}
         ${TYPES_SRC}
