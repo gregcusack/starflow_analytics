@@ -15,7 +15,16 @@ include(cmake/dep/catch.cmake)
 file(MAKE_DIRECTORY ${CMAKE_HOME_DIRECTORY}/src/proto)
 
 set(MODULES_DIR src/modules)
-set(MODULES_SRC ${MODULES_DIR}/pcap_reader.h ${MODULES_DIR}/pcap_reader.cc)
+set(MODULES_SRC
+        ${MODULES_DIR}/pcap_reader.h ${MODULES_DIR}/pcap_reader.cc)
+
+set(TYPES_DIR src/types)
+set(TYPES_SRC
+        ${TYPES_DIR}/clfr.h ${TYPES_DIR}/clfr.cc
+        ${TYPES_DIR}/features.h ${TYPES_DIR}/features.cc
+        ${TYPES_DIR}/key.h ${TYPES_DIR}/key.cc
+        ${TYPES_DIR}/packet.h ${TYPES_DIR}/packet.cc
+        ${TYPES_DIR}/raw_packet.h ${TYPES_DIR}/raw_packet.cc)
 
 add_custom_command(
         OUTPUT

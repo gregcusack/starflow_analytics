@@ -1,6 +1,7 @@
 
 add_executable(test_runner
         ${MODULES_SRC}
+        ${TYPES_SRC}
         test/test_runner_main.cc
         test/modules/pcap_reader_test.cc)
 
