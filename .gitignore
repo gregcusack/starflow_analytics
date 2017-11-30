@@ -5,3 +5,5 @@ build
 .idea/
 src/proto/
 test/include/catch.h
+/*.pcap
+/*.bin
