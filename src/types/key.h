@@ -38,9 +38,6 @@ namespace starflow {
 			std::uint16_t th_dport = 0;
 
 			virtual ~Key() = default;
-
-		private:
-			std::string _uint32_ip_addr_to_str(uint32_t addr) const;
 		};
 	}
 }
