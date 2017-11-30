@@ -16,6 +16,7 @@ file(MAKE_DIRECTORY ${CMAKE_HOME_DIRECTORY}/src/proto)
 
 set(MODULES_DIR src/modules)
 set(MODULES_SRC
+        ${MODULES_DIR}/flow_table.h ${MODULES_DIR}/flow_table.cc
         ${MODULES_DIR}/raw_packet_parser.h ${MODULES_DIR}/raw_packet_parser.cc
         ${MODULES_DIR}/pcap_reader.h ${MODULES_DIR}/pcap_reader.cc)
 
