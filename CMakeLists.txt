@@ -33,6 +33,7 @@ add_custom_command(
             "${CMAKE_CURRENT_LIST_DIR}/src/proto/starflow.pb.h"
             "${CMAKE_CURRENT_LIST_DIR}/src/proto/starflow.pb.cc"
         COMMAND protoc
+        MAIN_DEPENDENCY starflow.proto
         ARGS --cpp_out=src/proto starflow.proto
         WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
 )
