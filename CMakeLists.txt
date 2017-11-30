@@ -14,6 +14,9 @@ include(cmake/dep/catch.cmake)
 
 file(MAKE_DIRECTORY ${CMAKE_HOME_DIRECTORY}/src/proto)
 
+set(MODULES_DIR src/modules)
+set(MODULES_SRC ${MODULES_DIR}/pcap_reader.h ${MODULES_DIR}/pcap_reader.cc)
+
 add_custom_command(
         OUTPUT
             "${CMAKE_CURRENT_LIST_DIR}/src/proto/starflow.pb.h"
