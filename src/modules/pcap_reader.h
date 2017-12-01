@@ -5,7 +5,7 @@
 #include <stdexcept>
 #include <string>
 #include <functional>
-#include <list>
+#include <vector>
 #include <pcap.h>
 
 #include "../types/raw_packet.h"
@@ -38,9 +38,9 @@ namespace starflow {
 //          TODO: not yet implemented
 //			void set_playback(bool playback);
 
-			const PCAPReader& operator()() throw(std::runtime_error, std::logic_error);
+			void operator()() throw(std::runtime_error, std::logic_error);
 
-			const std::list<types::RawPacket>& packets() const;
+			const std::vector<types::RawPacket>& packets() const;
 
 			~PCAPReader() = default;
 
@@ -56,7 +56,7 @@ namespace starflow {
 			std::function<void (types::RawPacket)> _callback = nullptr;
 			bool _playback = true;
 			pcap* _pcap = nullptr;
-			std::list<types::RawPacket> _packets = {};
+			std::vector<types::RawPacket> _packets = {};
 		};
 	}
 }

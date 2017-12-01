@@ -1,4 +1,6 @@
 
+#include <iostream>
+#include <iomanip>
 #include "pcap_reader.h"
 
 void starflow::modules::PCAPReader::set_file_name(const std::string& file_name)
@@ -31,11 +33,11 @@ void starflow::modules::PCAPReader::set_playback(bool playback)
 	_playback = playback;
 }
 */
-const starflow::modules::PCAPReader& starflow::modules::PCAPReader::operator()()
+void starflow::modules::PCAPReader::operator()()
 	throw(std::runtime_error, std::logic_error)
 {
-	struct pcap_pkthdr* hdr;
-	const u_char* pl;
+	struct pcap_pkthdr* hdr = {};
+	const u_char* pl = {};
 
 	if (_file_name.empty())
 		throw std::logic_error("PCAPReader: no file name set");
@@ -45,29 +47,25 @@ const starflow::modules::PCAPReader& starflow::modules::PCAPReader::operator()()
 
 	_open(_file_name);
 
-	for (;;) {
-		int status = pcap_next_ex(_pcap, &hdr, &pl);
-		if (status == 1) {
-			if (_mode == mode::emit)
-				_callback(types::RawPacket(hdr, pl));
-			else
-				_packets.emplace_back(hdr, pl);
-			continue;
-		} else if (status == -2) {
-			break;
-		} else {
-			_close();
-			throw std::runtime_error(std::string("PCAPReader: error reading pcap file")
-									 + pcap_geterr(_pcap));
-		}
+	int status = 0;
+
+	while ((status = pcap_next_ex(_pcap, &hdr, &pl)) >= 0) {
+
+		if (_mode == mode::emit)
+			_callback(types::RawPacket(hdr, pl));
+		else
+			_packets.emplace_back(hdr, pl);
 	}
 
 	_close();
 
-	return *this;
+	if (status == -1) {
+		throw std::runtime_error(std::string("PCAPReader: error reading pcap file")
+								 + pcap_geterr(_pcap));
+	}
 }
 
-const std::list<starflow::types::RawPacket>& starflow::modules::PCAPReader::packets() const
+const std::vector<starflow::types::RawPacket>& starflow::modules::PCAPReader::packets() const
 {
 	return _packets;
 }

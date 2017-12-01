@@ -24,7 +24,7 @@ namespace starflow {
 
 			std::chrono::microseconds ts;
 			unsigned len;
-			const unsigned char* pl;
+			std::unique_ptr<unsigned char[]> pl = nullptr;
 		};
 	}
 }
