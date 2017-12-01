@@ -29,7 +29,8 @@ namespace starflow {
 
 			std::string str_desc() const;
 
-			bool operator<(Key b) const;
+			bool operator==(const Key& b) const;
+			bool operator<(const Key& b) const;
 
 			std::uint8_t  ip_proto = 0;
 			std::uint32_t ip_src   = 0;
