@@ -9,6 +9,7 @@ starflow::types::RawPacket::RawPacket(const starflow::types::RawPacket& copy_fro
 
 starflow::types::RawPacket& starflow::types::RawPacket::operator=(const starflow::types::RawPacket& copy_from)
 {
+	this->pl = std::unique_ptr<unsigned char[]>(new unsigned char[len]);
 	this->ts  = copy_from.ts;
 	this->len = copy_from.len;
 	std::memcpy(this->pl.get(), copy_from.pl.get(), len);
