@@ -1,6 +1,20 @@
 
 #include "raw_packet.h"
 
+starflow::types::RawPacket::RawPacket(const starflow::types::RawPacket& copy_from)
+	: ts(copy_from.ts), len(copy_from.len), pl(new unsigned char[len])
+{
+	std::memcpy(this->pl.get(), pl.get(), len);
+}
+
+starflow::types::RawPacket& starflow::types::RawPacket::operator=(const starflow::types::RawPacket& copy_from)
+{
+	this->ts  = copy_from.ts;
+	this->len = copy_from.len;
+	std::memcpy(this->pl.get(), copy_from.pl.get(), len);
+	return *this;
+}
+
 starflow::types::RawPacket::RawPacket(unsigned long ts, unsigned len, const unsigned char* pl)
 	: ts(ts), len(len), pl(new unsigned char[len])
 {

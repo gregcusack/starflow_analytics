@@ -1,5 +1,7 @@
 
 add_executable(packet_capture
+        src/modules/pcap_reader.h src/modules/pcap_reader.cc
+        src/helpers.h src/helpers.cc
         src/types/key.h src/types/key.cc
         src/types/features.h src/types/features.cc
         src/types/packet.h src/types/packet.cc
