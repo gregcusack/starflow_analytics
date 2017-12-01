@@ -2,7 +2,7 @@
 #include "pcap_file_reader.h"
 
 #include "../types/raw_packet.h"
-
+/*
 starflow::kernels::PCAPFileReader::PCAPFileReader(const std::string& file_name)
 {
 	_open(file_name);
@@ -29,3 +29,4 @@ void starflow::kernels::PCAPFileReader::_open(const std::string& file_name)
 		throw std::runtime_error(msg);
 	}
 }
+*/
