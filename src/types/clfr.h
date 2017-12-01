@@ -13,11 +13,13 @@ namespace starflow {
 	// forward declare kernels::CLFRTable to allow friend
 	// specification w/o circular dependency
 	namespace kernels { class CLFRTable; }
+	namespace modules { class FlowTable; }
 
 	namespace types {
 		class CLFR
 		{
 			friend class starflow::kernels::CLFRTable;
+			friend class starflow::modules::FlowTable;
 
 		public:
 			CLFR()                       = default;
