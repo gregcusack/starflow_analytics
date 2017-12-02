@@ -38,8 +38,8 @@ int main(int argc, char** argv)
 	});
 
 //
-	starflow::kernels::LiveCapture live_capture("en0");
-	starflow::kernels::PCAPFileReader pcap_file_reader("caida2015_02_dirA.pcap");
+//	starflow::kernels::LiveCapture live_capture("en0");
+	starflow::kernels::PCAPFileReader pcap_file_reader("test/data/http.pcap");
 
 
 //
@@ -63,16 +63,16 @@ int main(int argc, char** argv)
 
 //	starflow::kernels::TZSPReceiver tzsp_receiver(37008);
 	starflow::kernels::RawPacketParser raw_packet_parser(hdr_type, cap_len);
-	starflow::kernels::CLFRTable clfr_table;
-	starflow::kernels::HeavyHitter heavy_hitter;
+//	starflow::kernels::CLFRTable clfr_table;
+//	starflow::kernels::HeavyHitter heavy_hitter;
 
-	auto incomplete_evict_policy = starflow::kernels::CLFRTable::incomplete_evict_policy::to;
-	clfr_table.set_incomplete_evict_policy(incomplete_evict_policy);
+//	auto incomplete_evict_policy = starflow::kernels::CLFRTable::incomplete_evict_policy::to;
+//	clfr_table.set_incomplete_evict_policy(incomplete_evict_policy);
 //	clfr_table.set_incomplete_evict_pkt_count(10);
-	clfr_table.set_incomplete_evict_to(std::chrono::seconds(15));
+//	clfr_table.set_incomplete_evict_to(std::chrono::seconds(15));
 
 	raft::map m;
-	m += live_capture >> raw_packet_parser >> clfr_table >> heavy_hitter;
+	m += pcap_file_reader >> raw_packet_parser >> packet_printer;
 //	m += tzsp_receiver >> raw_packet_parser >> packet_printer;
 	m.exe();
 

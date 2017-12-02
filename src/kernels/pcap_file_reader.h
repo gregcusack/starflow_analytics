@@ -10,32 +10,14 @@
 
 namespace starflow {
 	namespace kernels {
-
 		class PCAPFileReader : public raft::kernel
 		{
 		public:
-			explicit PCAPFileReader(const std::string& file_name)
-				: _pcap_reader()
-			{
-				_pcap_reader.set_file_name(file_name);
-				_pcap_reader.set_callback([this](types::RawPacket p) {
-					this->read_packet(std::move(p));
-				});
-				output.add_port<starflow::types::RawPacket>("out");
-			}
-
-			raft::kstatus run() override
-			{
-				_pcap_reader();
-				return(raft::proceed);
-			}
-
-			void read_packet(starflow::types::RawPacket p)
-			{
-				output["out"].push(p);
-			}
+			explicit PCAPFileReader(const std::string& file_name);
+			raft::kstatus run() override;
 
 		private:
+			void _read_packet(starflow::types::RawPacket p);
 			modules::PCAPReader _pcap_reader;
 		};
 	}
