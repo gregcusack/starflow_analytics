@@ -17,8 +17,8 @@ file(MAKE_DIRECTORY ${CMAKE_HOME_DIRECTORY}/src/proto)
 set(MODULES_DIR src/modules)
 set(MODULES_SRC
         ${MODULES_DIR}/flow_table.h ${MODULES_DIR}/flow_table.cc
-        ${MODULES_DIR}/raw_packet_parser.h ${MODULES_DIR}/raw_packet_parser.cc
-        ${MODULES_DIR}/pcap_reader.h ${MODULES_DIR}/pcap_reader.cc)
+        ${MODULES_DIR}/pcap_reader.h ${MODULES_DIR}/pcap_reader.cc
+        ${MODULES_DIR}/raw_packet_parser.h ${MODULES_DIR}/raw_packet_parser.cc)
 
 set(TYPES_DIR src/types)
 set(TYPES_SRC
@@ -27,6 +27,12 @@ set(TYPES_SRC
         ${TYPES_DIR}/key.h ${TYPES_DIR}/key.cc
         ${TYPES_DIR}/packet.h ${TYPES_DIR}/packet.cc
         ${TYPES_DIR}/raw_packet.h ${TYPES_DIR}/raw_packet.cc)
+
+set(KERNELS_DIR src/kernels)
+set(KERNELS_SRC
+        ${KERNELS_DIR}/flow_table.h ${KERNELS_DIR}/flow_table.cc
+        ${KERNELS_DIR}/pcap_file_reader.h ${KERNELS_DIR}/pcap_file_reader.cc
+        ${KERNELS_DIR}/raw_packet_parser.h ${KERNELS_DIR}/raw_packet_parser.cc)
 
 add_custom_command(
         OUTPUT

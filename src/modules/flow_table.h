@@ -15,19 +15,22 @@ namespace starflow {
 		{
 			using flow_table_t           = std::map<types::Key, types::CLFR>;
 			using exported_flows_table_t = std::list<std::pair<types::Key, types::CLFR>>;
+			using export_flow_callback_t = std::function<void (types::Key, types::CLFR)>;
 
 		public:
 
 			enum class incomplete_evict_policy { none, to, pkt_count };
 			enum class mode { callback, store };
 
-			void add_packet(types::Key& key, types::Packet& packet)
+			void add_packet(types::Key key, types::Packet packet)
 				throw(std::logic_error);
 
-			void add_packet(std::pair<types::Key, types::Packet>& pair)
+			void add_packet(std::pair<types::Key, types::Packet> pair)
 				throw(std::logic_error);
 
 			void set_mode(mode m);
+
+			void set_callback(export_flow_callback_t&& callback);
 
 			unsigned long long count_packets_processed() const;
 			unsigned long long count_flows_processed() const;
@@ -58,7 +61,7 @@ namespace starflow {
 			unsigned long long _n_packets                    = 0;
 			unsigned long long _n_flows                      = 0;
 
-			std::function<void (types::Key, types::CLFR)> _callback = nullptr;
+			export_flow_callback_t _callback = nullptr;
 
 			void _check_timeouts(std::chrono::microseconds trigger_ts);
 

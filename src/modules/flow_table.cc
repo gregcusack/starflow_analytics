@@ -1,7 +1,7 @@
 
 #include "flow_table.h"
 
-void starflow::modules::FlowTable::add_packet(types::Key& key, types::Packet& packet)
+void starflow::modules::FlowTable::add_packet(types::Key key, types::Packet packet)
 	throw(std::logic_error)
 {
 	//TODO: refactor
@@ -13,11 +13,11 @@ void starflow::modules::FlowTable::add_packet(types::Key& key, types::Packet& pa
 
 	if (i == std::end(_active_flows)) {
 
-		if (key.ip_proto == IPPROTO_UDP
-			|| (key.ip_proto == IPPROTO_TCP && packet.features.tcp_flags.is_syn())) {
+//		if (key.ip_proto == IPPROTO_UDP
+//			|| (key.ip_proto == IPPROTO_TCP && packet.features.tcp_flags.is_syn())) {
 			i = _active_flows.emplace(key, types::CLFR{}).first;
 			_n_flows++;
-		}
+//		}
 	}
 
 	if (i != std::end(_active_flows)) {
@@ -41,7 +41,7 @@ void starflow::modules::FlowTable::add_packet(types::Key& key, types::Packet& pa
 		_check_timeouts(packet.ts);
 }
 
-void starflow::modules::FlowTable::add_packet(std::pair<types::Key, types::Packet>& pair)
+void starflow::modules::FlowTable::add_packet(std::pair<types::Key, types::Packet> pair)
 	throw(std::logic_error)
 {
 	add_packet(pair.first, pair.second);
@@ -50,6 +50,11 @@ void starflow::modules::FlowTable::add_packet(std::pair<types::Key, types::Packe
 void starflow::modules::FlowTable::set_mode(enum mode m)
 {
 	_mode = m;
+}
+
+void starflow::modules::FlowTable::set_callback(modules::FlowTable::export_flow_callback_t&& callback)
+{
+	_callback = std::move(callback);
 }
 
 unsigned long long starflow::modules::FlowTable::count_packets_processed() const

@@ -14,6 +14,7 @@
 #include "kernels/heavy_hitter.h"
 
 #include "kernels/tzsp_receiver.h"
+#include "kernels/flow_table.h"
 
 int main(int argc, char** argv)
 {
@@ -39,7 +40,7 @@ int main(int argc, char** argv)
 
 //
 //	starflow::kernels::LiveCapture live_capture("en0");
-	starflow::kernels::PCAPFileReader pcap_file_reader("test/data/http.pcap");
+	starflow::kernels::PCAPFileReader pcap_file_reader("test/data/test_2.pcap");
 
 
 //
@@ -66,13 +67,16 @@ int main(int argc, char** argv)
 //	starflow::kernels::CLFRTable clfr_table;
 //	starflow::kernels::HeavyHitter heavy_hitter;
 
+	starflow::kernels::FlowTable flow_table;
+
+
 //	auto incomplete_evict_policy = starflow::kernels::CLFRTable::incomplete_evict_policy::to;
 //	clfr_table.set_incomplete_evict_policy(incomplete_evict_policy);
 //	clfr_table.set_incomplete_evict_pkt_count(10);
 //	clfr_table.set_incomplete_evict_to(std::chrono::seconds(15));
 
 	raft::map m;
-	m += pcap_file_reader >> raw_packet_parser >> packet_printer;
+	m += pcap_file_reader >> raw_packet_parser >> flow_table >> clfr_printer;
 //	m += tzsp_receiver >> raw_packet_parser >> packet_printer;
 	m.exe();
 
