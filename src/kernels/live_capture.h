@@ -1,21 +1,19 @@
 
-#ifndef STARFLOW_ANALYTICS_LIVE_CAPTURE_H
-#define STARFLOW_ANALYTICS_LIVE_CAPTURE_H
+#ifndef STARFLOW_ANALYTICS_KERNELS_LIVE_CAPTURE_H
+#define STARFLOW_ANALYTICS_KERNELS_LIVE_CAPTURE_H
 
 #include <raft>
-#include <pcap.h>
+#include "../modules/live_capture.h"
 
 namespace starflow {
 	namespace kernels {
 		class LiveCapture : public raft::kernel
 		{
 		public:
-			explicit LiveCapture(const std::string& dev, int snaplen = 1600, int to_ms = 500);
+			explicit LiveCapture(const std::string& dev);
 			raft::kstatus run() override;
-
 		private:
-			void _connect(const std::string& dev, int snaplen, int to_ms) throw(std::runtime_error);
-			pcap_t* _pcap;
+			modules::LiveCapture _live_capture;
 		};
 	}
 }
