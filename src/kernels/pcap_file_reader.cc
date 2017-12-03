@@ -15,6 +15,7 @@ raft::kstatus starflow::kernels::PCAPFileReader::run()
 	const u_char* pl;
 
 	pcap_next_ex(_pcap, &hdr, &pl);
+	//std::cout << &pl << std::endl;
 	output["out"].push(types::RawPacket(hdr, pl));
 	return(raft::proceed);
 }

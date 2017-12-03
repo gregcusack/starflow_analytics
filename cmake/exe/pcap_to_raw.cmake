@@ -7,6 +7,7 @@ add_executable(pcap_to_raw src/pcap_to_raw.cc
 		src/kernels/sink.h
 		src/types/clfr.h src/types/clfr.cc
 		src/kernels/data.h src/kernels/data.cc
+		src/kernels/end.h src/kernels/end.cc
 		src/flow.h src/flow.cc
 		src/flow_table.h src/flow_table.cc
 		src/proto/starflow.pb.h src/proto/starflow.pb.cc

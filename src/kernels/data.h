@@ -1,6 +1,6 @@
 
-#ifndef STARFLOW_KERNELS_SINK
-#define STARFLOW_KERNELS_SINK
+#ifndef STARFLOW_KERNELS_DATA
+#define STARFLOW_KERNELS_DATA
 
 #include "../types/key.h"
 #include "../types/clfr.h"
