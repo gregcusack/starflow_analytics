@@ -1,5 +1,6 @@
 
 set(TEST_SRC
+        test/types/clfr_test.cc
         test/types/raw_packet_test.cc
         test/modules/flow_table_test.cc
         test/modules/pcap_reader_test.cc
