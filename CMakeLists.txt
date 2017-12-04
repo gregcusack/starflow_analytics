@@ -49,7 +49,7 @@ add_custom_command(
 
 #include(cmake/exe/clfr_converter.cmake)
 #include(cmake/exe/clfr_driver.cmake)
+#include(cmake/exe/pcap_flow_file_exporter.cmake)
 
-include(cmake/exe/pcap_flow_file_exporter.cmake)
 include(cmake/exe/packet_capture.cmake)
 include(cmake/exe/test_runner.cmake)
