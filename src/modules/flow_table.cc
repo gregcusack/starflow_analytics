@@ -15,7 +15,7 @@ void starflow::modules::FlowTable::add_packet(types::Key key, types::Packet pack
 
 //		if (key.ip_proto == IPPROTO_UDP
 //			|| (key.ip_proto == IPPROTO_TCP && packet.features.tcp_flags.is_syn())) {
-			i = _active_flows.emplace(key, types::CLFR{}).first;
+			i = _active_flows.emplace(key, types::CLFR(key)).first;
 			_n_flows++;
 //		}
 	}
@@ -126,7 +126,7 @@ starflow::modules::FlowTable::flow_table_t::iterator
 	i->second._evict_ts = evict_ts;
 
 	if (_mode == mode::callback)
-		_callback(i->first, i->second);
+		_callback(i->second);
 	else if (_mode == mode::store)
 		_exported_flows.emplace_back(*i);
 

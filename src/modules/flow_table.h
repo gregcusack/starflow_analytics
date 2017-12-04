@@ -15,7 +15,7 @@ namespace starflow {
 		{
 			using flow_table_t           = std::map<types::Key, types::CLFR>;
 			using exported_flows_table_t = std::list<std::pair<types::Key, types::CLFR>>;
-			using export_flow_callback_t = std::function<void (types::Key, types::CLFR)>;
+			using export_flow_callback_t = std::function<void (types::CLFR)>;
 
 		public:
 

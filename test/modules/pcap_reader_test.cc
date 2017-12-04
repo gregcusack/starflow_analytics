@@ -6,7 +6,7 @@
 
 using namespace starflow;
 
-TEST_CASE("PCAPReader", "[modules::PCAPReader]")
+TEST_CASE("PCAPReader", "[PCAPReader]")
 {
 
 	SECTION("operator(): throws a logic error if no filename is set")
