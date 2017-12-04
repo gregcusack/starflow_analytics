@@ -5,9 +5,10 @@
 #include <string>
 
 namespace starflow {
-	namespace helpers {
-
-		std::string uint32_ip_addr_to_str(const uint32_t addr);
+	namespace etc {
+		namespace format_helpers {
+			std::string uint32_ip_addr_to_str(const uint32_t& addr);
+		}
 	}
 }
 

@@ -38,6 +38,10 @@ set(KERNELS_SRC
         ${KERNELS_DIR}/pcap_file_reader.h ${KERNELS_DIR}/pcap_file_reader.cc
         ${KERNELS_DIR}/raw_packet_parser.h ${KERNELS_DIR}/raw_packet_parser.cc)
 
+set(ETC_DIR src/etc)
+set(ETC_SRC
+        ${ETC_DIR}/format_helpers.h ${ETC_DIR}/format_helpers.cc)
+
 add_custom_command(
         OUTPUT
             "${CMAKE_CURRENT_LIST_DIR}/src/proto/starflow.pb.h"

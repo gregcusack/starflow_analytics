@@ -1,6 +1,6 @@
 
 #include "key.h"
-#include "../helpers.h"
+#include "../etc/format_helpers.h"
 #include <sstream>
 #include <string>
 #include <iomanip>
@@ -27,8 +27,8 @@ starflow::types::Key::Key(std::uint8_t ip_p, std::uint32_t ip_src, std::uint32_t
 std::string starflow::types::Key::str_desc() const
 {
 	std::string desc = "starflow::types::Key(ip_proto=" + std::to_string(ip_proto) + ", ip_src="
-		+ helpers::uint32_ip_addr_to_str(ip_src) + ", ip_dst="
-		+ helpers::uint32_ip_addr_to_str(ip_dst) + ", th_sport="
+		+ etc::format_helpers::uint32_ip_addr_to_str(ip_src) + ", ip_dst="
+		+ etc::format_helpers::uint32_ip_addr_to_str(ip_dst) + ", th_sport="
 		+ std::to_string(th_sport) + ", th_dport=" + std::to_string(th_dport) + ")";
 
 	return desc;

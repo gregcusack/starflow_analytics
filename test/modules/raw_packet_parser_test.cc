@@ -2,7 +2,7 @@
 #include <catch.h>
 #include <iostream>
 #include "../../src/modules/raw_packet_parser.h"
-#include "../../src/helpers.h"
+#include "../../src/etc/format_helpers.h"
 
 #include "../include/raw_packet_data.h"
 
@@ -29,8 +29,8 @@ TEST_CASE("RawPacketParser", "[modules::RawPacketParser]")
 		std::tie(key1, packet1) = parser(pkt1);
 
 		CHECK(key1.ip_proto == 0x06);
-		CHECK(helpers::uint32_ip_addr_to_str(key1.ip_src) == "145.254.160.237");
-		CHECK(helpers::uint32_ip_addr_to_str(key1.ip_dst) == "65.208.228.223");
+		CHECK(etc::format_helpers::uint32_ip_addr_to_str(key1.ip_src) == "145.254.160.237");
+		CHECK(etc::format_helpers::uint32_ip_addr_to_str(key1.ip_dst) == "65.208.228.223");
 		CHECK(key1.th_sport == 3372);
 		CHECK(key1.th_dport == 80);
 
