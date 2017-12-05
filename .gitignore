@@ -7,3 +7,7 @@ src/proto/*.pb.h
 src/proto/*.pb.cc
 *.swp
 *.swo
+src/proto/
+test/include/catch.h
+/*.pcap
+/*.bin

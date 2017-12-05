@@ -32,7 +32,8 @@ namespace starflow {
 			std::string get_ip_src() const;
 			std::string get_dst_src() const;
 
-			bool operator<(Key b) const;
+			bool operator==(const Key& b) const;
+			bool operator<(const Key& b) const;
 
 			std::uint8_t  ip_proto = 0;
 			std::uint32_t ip_src   = 0;
@@ -41,9 +42,6 @@ namespace starflow {
 			std::uint16_t th_dport = 0;
 
 			virtual ~Key() = default;
-
-		private:
-			std::string _uint32_ip_addr_to_str(uint32_t addr) const;
 		};
 	}
 }

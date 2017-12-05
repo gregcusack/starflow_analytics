@@ -5,6 +5,9 @@
 #include <raft>
 #include <pcap.h>
 
+#include "../modules/pcap_reader.h"
+#include "../types/raw_packet.h"
+
 namespace starflow {
 	namespace kernels {
 		class PCAPFileReader : public raft::kernel
@@ -14,8 +17,8 @@ namespace starflow {
 			raft::kstatus run() override;
 
 		private:
-			void _open(const std::string& dev) throw(std::runtime_error);
-			pcap_t* _pcap = nullptr;
+			void _read_packet(starflow::types::RawPacket p);
+			modules::PCAPReader _pcap_reader;
 		};
 	}
 }

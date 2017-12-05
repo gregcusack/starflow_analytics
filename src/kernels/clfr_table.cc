@@ -19,11 +19,12 @@ raft::kstatus starflow::kernels::CLFRTable::run()
 	types::Packet packet = k_p_pair.second;
 
 	//Still wrong here (go to RawPacketParser)
-	if(key.get_ip_src() == "209.124.66.6") {
+	/*
+	if(key.get_ip_src() == "203.146.43.65") {
 		std::cout << "src IP: " << key.get_ip_src() << std::endl;
 		std::cout << "packet length: " << packet.len << std::endl;
 	}
-
+	*/
 	auto i = _flows.find(key);
 
 	if (i == std::end(_flows))
@@ -36,7 +37,6 @@ raft::kstatus starflow::kernels::CLFRTable::run()
 	} else if (_incomplete_evict_policy == incomplete_evict_policy::pkt_count
 		&& i->second.n_packets() >= _incomplete_evict_pkt_count) {
 		_evict_flow(i, packet.ts, false);
-
 	}
 
 	// set last t/o check to current packet ts on very first packet

@@ -67,7 +67,7 @@ raft::kstatus starflow::kernels::Data::run() {
 	
 	//implement this as a member function that just prints as
 	//as comma separated values to be printed to CSV
-/*
+
 	std::ofstream data_file;
 	data_file.open("data_file.csv",std::ios_base::app);
 	data_file << key.str_desc_for_df() << "," << num_packs;
@@ -79,7 +79,8 @@ raft::kstatus starflow::kernels::Data::run() {
 	data_file << "," << mean_pkt_len;
 	data_file << "," << max_pkt_len;
 	data_file << "," << stddev_pkt_len;
-*/
+	data_file << std::endl;
+
 	/*
 	if(key.get_ip_src() == "46.162.24.26") {
 
