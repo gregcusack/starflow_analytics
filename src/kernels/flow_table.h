@@ -15,7 +15,6 @@ namespace starflow {
 			raft::kstatus run() override;
 
 		private:
-			void _flow_export(types::Key k, types::CLFR f);
 			modules::FlowTable _flow_table;
 		};
 	}

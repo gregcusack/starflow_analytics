@@ -22,11 +22,14 @@ namespace starflow {
 			friend class starflow::modules::FlowTable;
 
 		public:
-			CLFR()                       = default;
+			CLFR();
+			CLFR(const Key& k);
 			CLFR(const CLFR&)            = default;
 			CLFR& operator=(const CLFR&) = default;
 			CLFR(CLFR&&)                 = default;
 			CLFR& operator=(CLFR&&)      = default;
+
+			const Key& key() const;
 
 			void add_packet(Packet p);
 			const Packet& last_packet() const;
@@ -43,6 +46,7 @@ namespace starflow {
 			virtual ~CLFR() = default;
 
 		private:
+			Key _key;
 			bool _complete = false;
 			std::chrono::microseconds _evict_ts = std::chrono::microseconds(0);
 			std::list<types::Packet> _packets = {};

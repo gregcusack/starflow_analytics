@@ -19,6 +19,7 @@ set(MODULES_SRC
         ${MODULES_DIR}/flow_table.h ${MODULES_DIR}/flow_table.cc
         ${MODULES_DIR}/live_capture.h ${MODULES_DIR}/live_capture.cc
         ${MODULES_DIR}/pcap_reader.h ${MODULES_DIR}/pcap_reader.cc
+        ${MODULES_DIR}/tzsp_receiver.h ${MODULES_DIR}/tzsp_receiver.cc
         ${MODULES_DIR}/raw_packet_parser.h ${MODULES_DIR}/raw_packet_parser.cc)
 
 set(TYPES_DIR src/types)
@@ -31,6 +32,7 @@ set(TYPES_SRC
 
 set(KERNELS_DIR src/kernels)
 set(KERNELS_SRC
+        ${KERNELS_DIR}/tzsp_receiver.h ${KERNELS_DIR}/tzsp_receiver.cc
         ${KERNELS_DIR}/flow_table.h ${KERNELS_DIR}/flow_table.cc
         ${KERNELS_DIR}/live_capture.h ${KERNELS_DIR}/live_capture.cc
         ${KERNELS_DIR}/pcap_file_reader.h ${KERNELS_DIR}/pcap_file_reader.cc
@@ -38,6 +40,11 @@ set(KERNELS_SRC
         ${KERNELS_DIR}/data.h ${KERNELS_DIR}/data.cc
         ${KERNELS_DIR}/end.h ${KERNELS_DIR}/end.cc
         ${KERNELS_DIR}/clfr_table.h ${KERNELS_DIR}/clfr_table.cc)
+
+set(ETC_DIR src/etc)
+set(ETC_SRC
+        ${ETC_DIR}/tcp_flow_state.h ${ETC_DIR}/tcp_flow_state.cc
+        ${ETC_DIR}/format_helpers.h ${ETC_DIR}/format_helpers.cc)
 
 add_custom_command(
         OUTPUT
@@ -50,14 +57,13 @@ add_custom_command(
 
 #include(cmake/exe/clfr_converter.cmake)
 #include(cmake/exe/clfr_driver.cmake)
+#include(cmake/exe/pcap_flow_file_exporter.cmake)
+
 
 include(cmake/exe/pcap_flow_file_exporter.cmake)
 #include(cmake/exe/read_pcap_flow.cmake)
 include(cmake/exe/pcap_to_raw.cmake)
-#include(cmake/exe/pcap_redis_publisher.cmake)
 #include(cmake/exe/raft_example.cmake)
-#include(cmake/exe/test_publisher.cmake)
-#include(cmake/exe/test_subscriber.cmake)
 include(cmake/exe/packet_capture.cmake)
 include(cmake/exe/test_runner.cmake)
 

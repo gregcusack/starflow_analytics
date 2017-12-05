@@ -5,6 +5,17 @@
 #include <iterator>
 #include <climits>
 
+starflow::types::CLFR::CLFR()
+	: _key() { }
+
+starflow::types::CLFR::CLFR(const Key& k)
+	: _key(k) { }
+
+const starflow::types::Key& starflow::types::CLFR::key() const
+{
+	return _key;
+}
+
 void starflow::types::CLFR::add_packet(Packet p)
 {
 	_packets.push_back(p);
