@@ -13,9 +13,9 @@
 #include "kernels/end.h"
 #include "types/key.h"
 #include "types/packet.h"
-#include "kernels/printer.h"
-#include "flow_table.h"
+#include "kernels/flow_table.h"
 #include "kernels/clfr_table.h"
+#include "kernels/bidirectional_flow_table.h"
 #include "types/clfr.h"
 
 int main(int argc, char** argv) {
@@ -40,10 +40,12 @@ int main(int argc, char** argv) {
 	starflow::kernels::RawPacketParser packet_parser;
 	//starflow::kernels::Sink<std::pair<starflow::types::Key, starflow::types::CLFR>> sink;
 	starflow::kernels::Data data;
-	starflow::kernels::CLFRTable clfr_table;	
+	starflow::kernels::FlowTable flow_table;
+	starflow::kernels::BiFlowTable bi_flow_table;
+	//starflow::kernels::CLFRTable clfr_table;	
 	starflow::kernels::End end;
 
-
+/*
 	std::ofstream data_file;
     data_file.open("data_file.csv");
     data_file << "proto" << "," << "ip_src" << "," << "ip_dest";
@@ -59,12 +61,15 @@ int main(int argc, char** argv) {
 	data_file << "max_pkt_len (bytes)" << ",";
 	data_file << "stddev_pkt_len (bytes)" << ",";
 	data_file << std::endl;
-
+*/
 	raft::map m;
 
 	//m += pcap_reader["out"] >> packet_parser["in"] >> printer;
 	//m += pcap_reader >> packet_parser["in"] >> end["packet_in"]; //>> cflr_table["packet_in"] >> end;// >> data;// >> printer;
-	m += pcap_reader >> packet_parser["in"] >> clfr_table["packet_in"] >> data;
+	
+	//m += pcap_reader >> packet_parser["in"] >> flow_table["packet_in"] >> data;
+	m += pcap_reader >> packet_parser["in"] >> flow_table["packet_in"] >> bi_flow_table;
+
 	m.exe();
 	return 0;
 }

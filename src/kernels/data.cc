@@ -7,15 +7,21 @@
 #include <string>
 
 starflow::kernels::Data::Data() : raft::kernel() {
-	input.add_port<std::pair<types::Key, types::CLFR>>("in");
+	//input.add_port<std::pair<types::Key, types::CLFR>>("in");
+	input.add_port<types::CLFR>("in");
 }
 
 raft::kstatus starflow::kernels::Data::run() {
-	std::pair<types::Key, types::CLFR> k_c_pair;
-	input["in"].pop(k_c_pair);
-	types::Key key = k_c_pair.first;
-	types::CLFR clfr = k_c_pair.second;
+	//std::pair<types::Key, types::CLFR> k_c_pair;
+	types::CLFR clfr;
+	input["in"].pop(clfr);
+	types::Key key = clfr.key();
+	//std::cout << "key: " << clfr.key().str_desc() << std::endl;
 
+	if(key.get_ip_src() == "10.12.16.101") {
+		std::cout << "here" << std::endl;
+	}
+	
 	unsigned long num_packs = clfr.n_packets();
 	unsigned long num_bytes = clfr.n_bytes();
 	std::string ip = key.str_desc();   
@@ -23,26 +29,6 @@ raft::kstatus starflow::kernels::Data::run() {
 	std::list<types::Packet> clfr_pkts = clfr.packets();
 	unsigned long flow_dur = flow_duration(clfr_pkts);
 	unsigned long min_ia_time = min_interarrival_time(clfr_pkts);
-	//std::cout << "here" << std::endl;
-	/*
-	if(key.get_ip_src() == "209.124.66.6") {
-		std::cout << "----------------begin----------" << std::endl;
-		std::cout << key.get_ip_src() << std::endl;
-		unsigned long mean_ia_time = mean_interarrival_time(clfr_pkts);
-		unsigned long min_pkt_len = min_packet_length(clfr_pkts);
-		for(auto const& itr : clfr_pkts) {
-			std::cout << "-----" << std::endl;
-			std::cout << itr.len << ", " << itr.ts.count() << std::endl;
-			std::cout << itr.features.tcp_flags.is_ack() << std::endl;
-			std::cout << itr.features.tcp_flags.is_syn() << std::endl;
-			std::cout << itr.features.tcp_flags.is_psh() << std::endl;
-			std::cout << itr.features.tcp_flags.is_fin() << std::endl;
-			std::cout << "-----" << std::endl;
-			//tcp_flags_t().str_desc() << std::endl;
-		}
-		std::cout << "----------------end----------" << std::endl;
-	}
-	*/
 	unsigned long mean_ia_time = mean_interarrival_time(clfr_pkts);
 	unsigned long max_ia_time = max_interarrival_time(clfr_pkts);
 	unsigned long stddev_ia_time = stddev_interarrival_time(clfr_pkts);
@@ -50,19 +36,7 @@ raft::kstatus starflow::kernels::Data::run() {
 	unsigned long mean_pkt_len = mean_packet_length(clfr_pkts);
 	unsigned long max_pkt_len = max_packet_length(clfr_pkts);
 	unsigned long stddev_pkt_len = stddev_packet_length(clfr_pkts);
-	/*
-	if(key.ip_src == 1712523786 && key.ip_dst == 1253695156) {
-		std::cout << key.ip_src << ", " << key.ip_dst << ", " << key.th_sport << ", " << key.th_dport << std::endl;
-		std::cout << max_pkt_len << std::endl;
-		std::cout << "num packets in clfr: " << clfr.n_packets() << std::endl;
-		for(auto const& itr : clfr_pkts) {
-			std::cout << itr.len << ", " << itr.ts.count() << std::endl;
-			//std::cout << itr.features.tcp_flags.is_ack() << std::endl;
-			//tcp_flags_t().str_desc() << std::endl;
-		}
-		//std::cout << clfr.packets().features.str_desc() << std::endl;
-	}
-	*/
+	
 	//May want to add a check to make sure max >= min
 	
 	//implement this as a member function that just prints as
@@ -80,14 +54,7 @@ raft::kstatus starflow::kernels::Data::run() {
 	data_file << "," << max_pkt_len;
 	data_file << "," << stddev_pkt_len;
 	data_file << std::endl;
-
-	/*
-	if(key.get_ip_src() == "46.162.24.26") {
-
-		std::cout << "here" << std::endl;
-	}
-	*/
-	//data_file << std::endl;
+	data_file << std::endl;
 
 	return (raft::proceed);
 }
@@ -218,3 +185,43 @@ unsigned long starflow::kernels::Data::stddev_packet_length(const std::list<type
 
 
 
+
+
+
+
+
+		//std::cout << "here" << std::endl;
+
+	/*
+	if(key.get_ip_src() == "209.124.66.6") {
+		std::cout << "----------------begin----------" << std::endl;
+		std::cout << key.get_ip_src() << std::endl;
+		unsigned long mean_ia_time = mean_interarrival_time(clfr_pkts);
+		unsigned long min_pkt_len = min_packet_length(clfr_pkts);
+		for(auto const& itr : clfr_pkts) {
+			std::cout << "-----" << std::endl;
+			std::cout << itr.len << ", " << itr.ts.count() << std::endl;
+			std::cout << itr.features.tcp_flags.is_ack() << std::endl;
+			std::cout << itr.features.tcp_flags.is_syn() << std::endl;
+			std::cout << itr.features.tcp_flags.is_psh() << std::endl;
+			std::cout << itr.features.tcp_flags.is_fin() << std::endl;
+			std::cout << "-----" << std::endl;
+			//tcp_flags_t().str_desc() << std::endl;
+		}
+		std::cout << "----------------end----------" << std::endl;
+	}
+	*/
+	
+	/*
+	if(key.ip_src == 1712523786 && key.ip_dst == 1253695156) {
+		std::cout << key.ip_src << ", " << key.ip_dst << ", " << key.th_sport << ", " << key.th_dport << std::endl;
+		std::cout << max_pkt_len << std::endl;
+		std::cout << "num packets in clfr: " << clfr.n_packets() << std::endl;
+		for(auto const& itr : clfr_pkts) {
+			std::cout << itr.len << ", " << itr.ts.count() << std::endl;
+			//std::cout << itr.features.tcp_flags.is_ack() << std::endl;
+			//tcp_flags_t().str_desc() << std::endl;
+		}
+		//std::cout << clfr.packets().features.str_desc() << std::endl;
+	}
+	*/

@@ -17,6 +17,7 @@ file(MAKE_DIRECTORY ${CMAKE_HOME_DIRECTORY}/src/proto)
 set(MODULES_DIR src/modules)
 set(MODULES_SRC
         ${MODULES_DIR}/flow_table.h ${MODULES_DIR}/flow_table.cc
+        ${MODULES_DIR}/bidirectional_flow_table.h ${MODULES_DIR}/bidirectional_flow_table.cc
         ${MODULES_DIR}/live_capture.h ${MODULES_DIR}/live_capture.cc
         ${MODULES_DIR}/pcap_reader.h ${MODULES_DIR}/pcap_reader.cc
         ${MODULES_DIR}/tzsp_receiver.h ${MODULES_DIR}/tzsp_receiver.cc
@@ -34,6 +35,7 @@ set(KERNELS_DIR src/kernels)
 set(KERNELS_SRC
         ${KERNELS_DIR}/tzsp_receiver.h ${KERNELS_DIR}/tzsp_receiver.cc
         ${KERNELS_DIR}/flow_table.h ${KERNELS_DIR}/flow_table.cc
+        ${KERNELS_DIR}/bidirectional_flow_table.h ${KERNELS_DIR}/bidirectional_flow_table.cc
         ${KERNELS_DIR}/live_capture.h ${KERNELS_DIR}/live_capture.cc
         ${KERNELS_DIR}/pcap_file_reader.h ${KERNELS_DIR}/pcap_file_reader.cc
         ${KERNELS_DIR}/raw_packet_parser.h ${KERNELS_DIR}/raw_packet_parser.cc

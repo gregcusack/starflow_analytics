@@ -37,8 +37,8 @@ std::string starflow::types::Key::str_desc() const
 //function to print key to CSV for feature extraction
 std::string starflow::types::Key::str_desc_for_df() const {
 	std::string desc = std::to_string(ip_proto) + ","
-	+ helpers::uint32_ip_addr_to_str(ip_src) + ","
-	+ helpers::uint32_ip_addr_to_str(ip_dst) + ","
+	+ etc::format_helpers::uint32_ip_addr_to_str(ip_src) + ","
+	+ etc::format_helpers::uint32_ip_addr_to_str(ip_dst) + ","
 	+ std::to_string(th_sport) + "," + std::to_string(th_dport);
 	return desc;
 }
@@ -56,8 +56,8 @@ bool starflow::types::Key::operator<(const starflow::types::Key& b) const
 }
 
 std::string starflow::types::Key::get_ip_src() const {
-	return helpers::uint32_ip_addr_to_str(ip_src);
+	return etc::format_helpers::uint32_ip_addr_to_str(ip_src);
 }
 std::string starflow::types::Key::get_dst_src() const {
-	return helpers::uint32_ip_addr_to_str(ip_dst);
+	return etc::format_helpers::uint32_ip_addr_to_str(ip_dst);
 }

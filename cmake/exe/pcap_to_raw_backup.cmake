@@ -3,8 +3,6 @@ add_executable(pcap_to_raw src/pcap_to_raw.cc
 		src/types/features.h src/types/features.cc
 		src/types/packet.h src/types/packet.cc
 		src/types/raw_packet.h src/types/raw_packet.cc
-		src/kernels/printer.h
-		src/kernels/sink.h
 		src/types/clfr.h src/types/clfr.cc
 		src/kernels/data.h src/kernels/data.cc
 		src/kernels/end.h src/kernels/end.cc
