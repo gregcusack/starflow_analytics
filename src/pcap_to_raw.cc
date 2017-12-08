@@ -10,6 +10,7 @@
 #include "kernels/raw_packet_parser.h"
 //#include "kernels/sink.h"
 #include "kernels/data.h"
+#include "kernels/bi_data.h"
 #include "kernels/end.h"
 #include "types/key.h"
 #include "types/packet.h"
@@ -39,36 +40,58 @@ int main(int argc, char** argv) {
 	starflow::kernels::PCAPFileReader pcap_reader(argv[1]);
 	starflow::kernels::RawPacketParser packet_parser;
 	//starflow::kernels::Sink<std::pair<starflow::types::Key, starflow::types::CLFR>> sink;
-	starflow::kernels::Data data;
+	//starflow::kernels::Data data;
 	starflow::kernels::FlowTable flow_table;
 	starflow::kernels::BiFlowTable bi_flow_table;
+	starflow::kernels::BiData bi_data;
 	//starflow::kernels::CLFRTable clfr_table;	
-	starflow::kernels::End end;
+	//starflow::kernels::End end;
 
 /*
 	std::ofstream data_file;
     data_file.open("data_file.csv");
     data_file << "proto" << "," << "ip_src" << "," << "ip_dest";
     data_file << "," << "s_port" << "," << "d_port" << ",";
-	data_file << "#pkts" << "," << "#bytes" << ",";
-	data_file << "flow_duration (us)" << ",";
-	data_file << "min_ia_time (us)" << ",";
-	data_file << "mean_ia_time (us)" << ",";
-	data_file << "max_ia_time (us)" << ",";
-	data_file << "stddev_ia_time (us)" << ",";
-	data_file << "min_pkt_len (bytes)" << ",";
-	data_file << "mean_pkt_len (bytes)" << ",";
-	data_file << "max_pkt_len (bytes)" << ",";
-	data_file << "stddev_pkt_len (bytes)" << ",";
+	data_file << "i_npkts" << "," << "i_nbytes" << ",";
+	data_file << "i_flow_dur" << ",";
+	data_file << "i_min_ia" << ",";
+	data_file << "i_mean_ia" << ",";
+	data_file << "i_max_ia" << ",";
+	data_file << "i_sdev_ia" << ",";
+	data_file << "i_min_len" << ",";
+	data_file << "i_mean_len" << ",";
+	data_file << "i_max_len" << ",";
+	data_file << "i_sdev_len" << ",";
+	data_file << "i_min_burst" << ",";
+	data_file << "i_mean_burst" << ",";
+	data_file << "i_max_burst" << ",";
+
+
+	data_file << "o_npkts" << "," << "o_nbytes" << ",";
+	data_file << "o_flow_dur" << ",";
+	data_file << "o_min_ia" << ",";
+	data_file << "o_mean_ia" << ",";
+	data_file << "o_max_ia" << ",";
+	data_file << "o_sdev_ia" << ",";
+	data_file << "o_min_len" << ",";
+	data_file << "o_mean_len" << ",";
+	data_file << "o_max_len" << ",";
+	data_file << "o_sdev_len" << ",";
+	data_file << "o_min_burst" << ",";
+	data_file << "o_mean_burst" << ",";
+	data_file << "o_max_burst" << ",";
+
+	data_file << "flow_rat" << ",";
+	data_file << "byte_rat" << ",";
 	data_file << std::endl;
 */
-	raft::map m;
 
-	//m += pcap_reader["out"] >> packet_parser["in"] >> printer;
-	//m += pcap_reader >> packet_parser["in"] >> end["packet_in"]; //>> cflr_table["packet_in"] >> end;// >> data;// >> printer;
+	raft::map m;
 	
 	//m += pcap_reader >> packet_parser["in"] >> flow_table["packet_in"] >> data;
 	m += pcap_reader >> packet_parser["in"] >> flow_table["packet_in"] >> bi_flow_table;
+	m += bi_flow_table["clfr_out_flow"] >> bi_data["clfr_out_flow"];
+	m += bi_flow_table["clfr_in_flow"] >> bi_data["clfr_in_flow"];
 
 	m.exe();
 	return 0;

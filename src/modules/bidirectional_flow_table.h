@@ -35,10 +35,11 @@ namespace starflow {
 			//const exported_bi_flows_table_t& exported_bi_flows() const;
 
 			//void force_export_tcp(bool complete = false);
+			//bi_flow_table_t get_bi_flow_table
 
 		private:
 			bi_flow_table_t _active_flows					= {};
-			//exported_bi_flows_table_t _exported_bi_flows	= {};
+			exported_bi_flows_table_t _exported_bi_flows	= {};
 
 			//std::chrono::microseconds _to_check_interval    = std::chrono::seconds(10);
 			//std::chrono::microseconds _udp_to               = std::chrono::seconds(30);

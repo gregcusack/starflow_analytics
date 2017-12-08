@@ -12,13 +12,7 @@
 
 #include "raw_packet_parser.h"
 
-int count = 0;
-int count_1 = 0;
-int count_2 = 0;
-int count_3 = 0;
-int count_4 = 0;
-int count_5 = 0;
-int total = 0;
+
 
 
 starflow::kernels::RawPacketParser::RawPacketParser(outer_header_type t, capture_length l)

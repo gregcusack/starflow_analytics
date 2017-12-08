@@ -1,6 +1,7 @@
 #include "bidirectional_flow_table.h"
 
-void starflow::modules::BiFlowTable::add_clfr(types::CLFR clfr)
+starflow::modules::BiFlowTable::bi_flow_table::iterator
+ starflow::modules::BiFlowTable::add_clfr(types::CLFR clfr)
 	throw(std::logic_error)
 {
 	//if(_mode == mode::callback && !_callback)
@@ -38,7 +39,9 @@ void starflow::modules::BiFlowTable::add_clfr(types::CLFR clfr)
 				k->second.second = clfr;
 				std::cout << "incoming!" << std::endl;
 			}
-			//_evict_flow(
+			return k;
+			//_evict_flow!
+			//_evict_flow(k);
 			flag = true;
 			break;
 			//return true;
@@ -47,10 +50,33 @@ void starflow::modules::BiFlowTable::add_clfr(types::CLFR clfr)
 	if(!flag) {
 		k = _active_flows.emplace(ikey, std::pair<types::CLFR, types::CLFR>(clfr, clfr)).first;
 	}
+	k = NULL;
+	return k;
 	//if(!flag) { //key not in bi_flow_table
 	//	if(src_ip) { //set as both --> idk how to get around this
 	//		_active_flows.emplace(ikey, std::pair<types::CLFR, types::CLFR>(clfr, clfr));
 	//	}
 	//}
-
 }
+
+/*
+starflow::modules::BiFlowTable::bi_flow_table_t::iterator
+	starflow::modules::BiFlowTable::_evict_flow(const bi_flow_table_t::iterator& i) {
+		return _active_flows.erase(i);
+	}
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

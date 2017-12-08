@@ -30,7 +30,10 @@ namespace starflow {
 			std::string str_desc() const;
 			std::string str_desc_for_df() const;
 			std::string get_ip_src() const;
-			std::string get_dst_src() const;
+			std::string get_ip_dst() const;
+			std::string get_proto() const;
+			std::string get_sport() const;
+			std::string get_dport() const;
 
 			bool operator==(const Key& b) const;
 			bool operator<(const Key& b) const;

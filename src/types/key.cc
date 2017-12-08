@@ -58,6 +58,16 @@ bool starflow::types::Key::operator<(const starflow::types::Key& b) const
 std::string starflow::types::Key::get_ip_src() const {
 	return etc::format_helpers::uint32_ip_addr_to_str(ip_src);
 }
-std::string starflow::types::Key::get_dst_src() const {
+std::string starflow::types::Key::get_ip_dst() const {
 	return etc::format_helpers::uint32_ip_addr_to_str(ip_dst);
 }
+std::string starflow::types::Key::get_proto() const {
+	return std::to_string(ip_proto);
+}
+std::string starflow::types::Key::get_sport() const {
+	return std::to_string(th_sport);
+}
+std::string starflow::types::Key::get_dport() const {
+	return std::to_string(th_dport);
+}
+
