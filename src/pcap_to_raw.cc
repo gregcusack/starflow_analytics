@@ -47,7 +47,6 @@ int main(int argc, char** argv) {
 	//starflow::kernels::CLFRTable clfr_table;	
 	//starflow::kernels::End end;
 
-/*
 	std::ofstream data_file;
     data_file.open("data_file.csv");
     data_file << "proto" << "," << "ip_src" << "," << "ip_dest";
@@ -84,7 +83,6 @@ int main(int argc, char** argv) {
 	data_file << "flow_rat" << ",";
 	data_file << "byte_rat" << ",";
 	data_file << std::endl;
-*/
 
 	raft::map m;
 	
